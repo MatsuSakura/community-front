@@ -54,7 +54,50 @@
       @onClose="onClose"
       @onConfirm="onConfirm"
       >
-
+      <div slot="content">
+        <el-form
+          :model="addModel"
+          ref="addForm"
+          :rules="rules"
+          label-width="80px"
+          :inline="true"
+          size="small"
+        >
+          <el-form-item prop="userName" label="姓名:">
+            <el-input v-model="addModel.userName"></el-input>
+          </el-form-item>
+          <el-form-item style="width:280px;" prop="sex" label="性别:">
+            <el-radio-group  v-model="addModel.sex">
+              <el-radio :label="'0'">男</el-radio>
+              <el-radio :label="'1'">女</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item prop="phone" label="电话:">
+            <el-input v-model="addModel.phone"></el-input>
+          </el-form-item>
+          <el-form-item prop="idCard"  label="身份证:">
+            <el-input v-model="addModel.idCard"></el-input>
+          </el-form-item>
+          <el-form-item prop="loginName" label="登录名:">
+            <el-input v-model="addModel.loginName"></el-input>
+          </el-form-item>
+          <el-form-item prop="password" label="密码:">
+            <el-input v-model="addModel.password"></el-input>
+          </el-form-item>
+          <el-form-item style="width:280px;" prop="status" label="离职:">
+            <el-radio-group v-model="addModel.status">
+              <el-radio :label="'1'">是</el-radio>
+              <el-radio :label="'0'">否</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item style="width:280px;" prop="isUsed" label="启用:">
+            <el-radio-group  v-model="addModel.isUsed">
+              <el-radio :label="'1'">是</el-radio>
+              <el-radio :label="'0'">否</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-form>
+      </div>
       </SysDialog>
 
     </el-main>
@@ -73,11 +116,25 @@
     },
     data() {
       return {
+        rules: {},
+      //新增或编辑表单数据域
+      addModel: {
+        userId:'',
+        type:'', //0： 新增 1： 编辑
+        userName:'',
+        sex:'',
+        phone:'',
+        idCard:'',
+        loginName:'',
+        password:'',
+        status:'',
+        isUsed:''
+      },
           dialog:{
               title:"",
               visible:false,
-              height:300,
-              width:710
+              height:230,
+              width:600
           },
         //表格的高度
         tableHeight: 0,
@@ -120,6 +177,7 @@
         let res = await getUserListApi(this.parms);
         if (res.code == 200) {
           this.tableList = res.data.records;
+          this.parms.total = res.data.total;
         }
         console.log(res);
       },
