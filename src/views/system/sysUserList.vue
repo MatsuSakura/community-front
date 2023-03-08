@@ -16,7 +16,7 @@
         </el-form-item>
         <el-form-item>
           <el-button icon="el-icon-search">查询</el-button>
-          <el-button type="primary" icon="el-icon-plus">新增</el-button>
+          <el-button @click="addUser" type="primary" icon="el-icon-plus">新增</el-button>
         </el-form-item>
       </el-form>
       <!-- 员工表格 -->
@@ -46,6 +46,17 @@
         background
       >
       </el-pagination>
+      <!-- 新增或编辑弹框 -->
+      <SysDialog :title="dialog.title"
+      :visible="dialog.visible"
+      :height="dialog.height"
+      :width="dialog.width"
+      @onClose="onClose"
+      @onConfirm="onConfirm"
+      >
+
+      </SysDialog>
+
     </el-main>
   </template>
   
@@ -56,8 +67,18 @@
 
   export default {
     //所有需要在页面上展示的数据，都需要显示的在data里面进行定义
+    components:{
+        //注册组件
+        SysDialog
+    },
     data() {
       return {
+          dialog:{
+              title:"",
+              visible:false,
+              height:300,
+              width:710
+          },
         //表格的高度
         tableHeight: 0,
         //搜索框数据绑定
@@ -81,6 +102,20 @@
       });
     },
     methods: {
+        //对话框关闭
+        onClose(){
+            this.dialog.title="新增员工"
+            this.dialog.visible=false
+        },
+        //新增员工按钮
+        addUser(){
+            this.dialog.title="新增员工"
+            this.dialog.visible=true
+        },
+        onConfirm(){
+            this.dialog.visible=false
+        },
+      //获取用户列表
       async getUserList() {
         let res = await getUserListApi(this.parms);
         if (res.code == 200) {
