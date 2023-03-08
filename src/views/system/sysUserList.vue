@@ -51,6 +51,9 @@
   
   <script>
   import { getUserListApi } from "@/api/user";
+  import SysDialog from "@/components/system/SysDialog"
+
+
   export default {
     //所有需要在页面上展示的数据，都需要显示的在data里面进行定义
     data() {
