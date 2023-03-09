@@ -25,7 +25,7 @@
         </el-form-item>
       </el-form>
       <!-- 角色列表 -->
-      <el-table :height="tableHeight" size="small" :data="roleList" border stripe>
+      <el-table :height="tableHeight" size="medium" :data="roleList" border stripe>
         <el-table-column label="角色名称" prop="roleName"></el-table-column>
         <el-table-column label="备注" prop="remark"></el-table-column>
         <el-table-column align="center" width="200" label="操作">
@@ -41,7 +41,7 @@
         @size-change="sizeChange"
         @current-change="currentChange"
         :current-page.sync="parms.currentPage"
-        :page-sizes="[10, 20, 40, 80, 100]"
+        :page-sizes="[5,10,15,20]"
         :page-size="parms.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="parms.total"
@@ -117,7 +117,7 @@
         tableHeight: 0,
         //查询参数
         parms: {
-          pageSize: 10, //每页显示几条数据
+          pageSize: 5, //每页显示几条数据
           currentPage: 1, //当前第几页
           roleName: "",
           total: 0, //总条数
@@ -134,12 +134,27 @@
     },
     methods: {
       //删除按钮
-      deleteRole(row){
-  
-      },
+      async deleteRole(row) {
+      let confrim = await this.$myconfirm("确定删除该数据吗？");
+      if (confrim) {
+        let res = await deleteRoleApi({ roleId: row.roleId });
+        if (res && res.code == 200) {
+          //刷新列表
+          this.getRoleList();
+          this.$message.success(res.msg);
+        }
+      }
+    },
       //编辑按钮
       editRole(row){
-  
+      //清空表单
+      this.$resetForm("addForm", this.addModule);
+      //设置为编辑
+      this.addModule.type = "1";
+      //设置弹框属性
+      this.dialog.title = "编辑角色";
+      this.$objCoppy(row, this.addModule);
+      this.dialog.visible = true;
       },
       //新增或编辑取消事件
       onClose() {
@@ -152,7 +167,9 @@
             let res = null;
             if(this.addModule.type == '0'){
               res = await addRoleApi(this.addModule);
-            }
+            }else {
+            res = await editRoleApi(this.addModule);
+          }
             if(res && res.code == 200){
               //刷新列表
               this.getRoleList();
@@ -163,9 +180,15 @@
         })
       },
       //页数改变时触发
-      currentChange(val) {},
-      //页容量改变时触发
-      sizeChange(val) {},
+    currentChange(val) {
+      this.parms.currentPage = val;
+      this.getRoleList();
+    },
+    //页容量改变时触发
+    sizeChange(val) {
+      this.parms.pageSize = val;
+      this.getRoleList();
+    },
       //新增按钮
       addBtn() {
         //清空表单数据
