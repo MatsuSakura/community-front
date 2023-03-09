@@ -15,7 +15,8 @@
           <el-input v-model="parms.phone"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button icon="el-icon-search">查询</el-button>
+          <el-button @click="searchBtn" icon="el-icon-search">查询</el-button>
+          <el-button @click="resetBtn" style="color:#FF7670;" icon="el-icon-delete">重置</el-button>
           <el-button @click="addUser" type="primary" icon="el-icon-plus">新增</el-button>
         </el-form-item>
       </el-form>
@@ -49,7 +50,7 @@
             active-text="启用"
             inactive-text="禁用"
             :inactive-value="'1'"
-            v-model="scope.row.status"
+            v-model="scope.row.isUsed"
             @change="changeUsed(scope.row)"
           ></el-switch>
         </template>
@@ -85,8 +86,8 @@
       <el-pagination
         @size-change="sizeChange"
         @current-change="currentChange"
-        :current-page.sync="parms.curentPage"
-        :page-sizes="[10, 20, 40, 80, 100]"
+        :current-page.sync="parms.currentPage"
+        :page-sizes="[5,10,15,20]"
         :page-size="parms.pageSize"
         layout="total,sizes,prev,pager,next,jumper"
         :total="parms.total"
@@ -233,7 +234,7 @@
         parms: {
           phone: "",
           userName: "",
-          pageSize: 10,
+          pageSize: 5,
           currentPage: 1,
           total: 0,
         },
@@ -250,9 +251,26 @@
       });
     },
     methods: {
+      //重置按钮
+    resetBtn(){
+      this.parms.phone = '';
+      this.parms.userName = '';
+      this.getUserList();
+    },
+    //搜索按钮
+    searchBtn(){
+      this.getUserList();
+    },
       //删除按钮
-    deleteUser(row) {
-      console.log(row);
+    async deleteUser(row) {
+      let comfirm=await this.$myconfirm('确定删除该员工吗');
+      console.log(comfirm);
+      if(comfirm=true){
+        let res=await deleteUserApi({userId:row.userId});
+        if(res && res.code == 200){
+          this.getUserList();
+        }
+      }
     },
     //编辑按钮
     editUser(row) {
@@ -267,12 +285,34 @@
       this.dialog.visible = true;
       console.log(row);
     },
-        changeUsed(row){
-            console.log(row);
-        },
-        changeStatus(row){
-            console.log(row);
-        },
+        //表格是否启用点击事件
+    async changeUsed(row) {
+      console.log(row);
+      let parm = {
+        userId: row.userId,
+        isUsed: row.isUsed,
+      };
+      let res = await editUserApi(parm);
+      if (res && res.code == 200) {
+        //刷新列表
+        this.getUserList();
+        this.$message.success(res.msg);
+      }
+    },
+    //表格是否离职点击事件
+    async changeStatus(row) {
+      console.log(row);
+      let parm = {
+        userId: row.userId,
+        status: row.status,
+      };
+      let res = await editUserApi(parm);
+      if (res && res.code == 200) {
+        //刷新列表
+        this.getUserList();
+        this.$message.success(res.msg);
+      }
+    },
         //对话框关闭
         onClose(){
             this.dialog.title="新增员工"
@@ -314,14 +354,18 @@
         }
         console.log(res);
       },
-      //页容量改变的时候触发
-      sizeChange(val) {
-        console.log(val);
-      },
-      //页数改变的时候触发
-      currentChange(val) {
-        console.log(val);
-      },
+      //页容量改变触发
+    sizeChange(val) {
+      console.log(val)
+      this.parms.pageSize = val;
+      this.getUserList();
+    },
+    //页数改变时触发
+    currentChange(val) {
+      console.log(val)
+      this.parms.curentPage = val;
+      this.getUserList();
+    },
     },
   };
   </script>
