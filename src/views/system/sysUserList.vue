@@ -24,9 +24,56 @@
         <el-table-column prop="userName" label="姓名"></el-table-column>
         <el-table-column prop="phone" label="电话"></el-table-column>
         <el-table-column prop="idCard" label="身份证"></el-table-column>
-        <el-table-column prop="sex" label="性别"></el-table-column>
-        <el-table-column prop="status" label="是否在职"></el-table-column>
-        <el-table-column prop="isUsed" label="账户状态"></el-table-column>
+        <el-table-column align="center" prop="sex" label="性别">
+            <template slot-scope="scope">
+                <el-tag v-if="scope.row.sex == '1'" size="normal">男</el-tag>
+                <el-tag v-if="scope.row.sex == '0'" type="success" size="normal">女</el-tag>
+            </template>
+        </el-table-column>
+        <el-table-column align="center" prop="status" label="是否在职">
+            <template slot-scope="scope">
+          <el-switch
+            :active-value="'0'"
+            active-text="在职"
+            inactive-text="离职"
+            :inactive-value="'1'"
+            v-model="scope.row.status"
+            @change="changeStatus(scope.row)"
+          ></el-switch>
+        </template>
+        </el-table-column>
+        <el-table-column align="center" prop="isUsed" label="账户状态">
+            <template slot-scope="scope">
+            <el-switch
+            :active-value="'0'"
+            active-text="启用"
+            inactive-text="禁用"
+            :inactive-value="'1'"
+            v-model="scope.row.status"
+            @change="changeUsed(scope.row)"
+          ></el-switch>
+        </template>
+        </el-table-column>
+
+        <el-table-column align="center" width="200" label="操作">
+        <template slot-scope="scope">
+          <el-button
+            icon="el-icon-edit"
+            type="primary"
+            size="small"
+            @click="editUser(scope.row)"
+            >编辑</el-button
+          >
+          <el-button
+            icon="el-icon-delete"
+            type="danger"
+            size="small"
+            @click="deleteUser(scope.row)"
+            >删除</el-button
+          >
+        </template>
+      </el-table-column>
+
       </el-table>
       <!-- 分页
         size-change 页容量改变时触发事件
@@ -68,8 +115,8 @@
           </el-form-item>
           <el-form-item style="width:280px;" prop="sex" label="性别:">
             <el-radio-group  v-model="addModel.sex">
-              <el-radio :label="'0'">男</el-radio>
-              <el-radio :label="'1'">女</el-radio>
+              <el-radio :label="'1'">男</el-radio>
+              <el-radio :label="'0'">女</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item prop="phone" label="电话:">
@@ -92,8 +139,8 @@
           </el-form-item>
           <el-form-item style="width:280px;" prop="isUsed" label="启用:">
             <el-radio-group  v-model="addModel.isUsed">
-              <el-radio :label="'1'">是</el-radio>
-              <el-radio :label="'0'">否</el-radio>
+              <el-radio :label="'0'">是</el-radio>
+              <el-radio :label="'1'">否</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-form>
@@ -104,7 +151,7 @@
   </template>
   
   <script>
-  import { getUserListApi } from "@/api/user";
+  import { getUserListApi,addUserApi,editUserApi,deleteUserApi } from "@/api/user";
   import SysDialog from "@/components/system/SysDialog"
 
 
@@ -116,7 +163,51 @@
     },
     data() {
       return {
-        rules: {},
+      //表单验证规则
+      rules: {
+        userName: [
+          {
+            required: true,
+            trigger: "change",
+            message: "请填写姓名",
+          },
+        ],
+        phone: [
+          {
+            required: true,
+            trigger: "change",
+            message: "请填写电话号码",
+          },
+        ],
+        idCard: [
+          {
+            required: true,
+            trigger: "change",
+            message: "请填写身份证号码",
+          },
+        ],
+        status: [
+          {
+            required: true,
+            trigger: "change",
+            message: "请选择是否离职",
+          },
+        ],
+        isUsed: [
+          {
+            required: true,
+            trigger: "change",
+            message: "请选择是否启用",
+          },
+        ],
+            sex: [
+          {
+            required: true,
+            trigger: "change",
+            message: "请选择性别",
+          },
+        ]
+      },
       //新增或编辑表单数据域
       addModel: {
         userId:'',
@@ -159,6 +250,29 @@
       });
     },
     methods: {
+      //删除按钮
+    deleteUser(row) {
+      console.log(row);
+    },
+    //编辑按钮
+    editUser(row) {
+      this.dialog.title="编辑员工"
+      //清空表单数据
+      this.$resetForm('addForm',this.addModel)
+      //设为编辑
+      this.addModel.type = '1';
+      //编辑回显
+      this.$objCoppy(row,this.addModel);
+      //显示新增或编辑弹框
+      this.dialog.visible = true;
+      console.log(row);
+    },
+        changeUsed(row){
+            console.log(row);
+        },
+        changeStatus(row){
+            console.log(row);
+        },
         //对话框关闭
         onClose(){
             this.dialog.title="新增员工"
@@ -166,11 +280,30 @@
         },
         //新增员工按钮
         addUser(){
+          //清空表单数据
+          this.$resetForm('addForm',this.addModel)
+            this.addModel.type='0'
             this.dialog.title="新增员工"
             this.dialog.visible=true
         },
         onConfirm(){
-            this.dialog.visible=false
+            this.$refs.addForm.validate(async(valid)=>{
+                if(valid){
+                    let res=null;
+                    if(this.addModel.type=='0'){
+                        res=await addUserApi(this.addModel)
+                    }else{
+                        res = await editUserApi(this.addModel)
+                    }
+                    //成功，刷新数据列表
+                    if (res && res.code == 200) {
+                        this.getUserList();
+                        this.dialog.visible = false;
+                    }
+                    console.log(res);
+                    // this.dialog.visible=false
+                }
+            })
         },
       //获取用户列表
       async getUserList() {
