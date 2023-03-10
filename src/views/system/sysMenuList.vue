@@ -9,6 +9,51 @@
         </el-form-item>
         <!-- <i class="el-icon-circle-plus-outline"></i> -->
       </el-form>
+
+      <el-table
+      :height="tableHeight"
+      :data="tableList"
+      row-key="menuId"
+      :tree-props="{ children: 'children' }"
+      border
+      stripe
+      default-expand-all
+    >
+      <el-table-column prop="menuLabel" label="菜单名称"></el-table-column>
+      <el-table-column prop="type" label="菜单类型">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.type == '0'">目录</el-tag>
+          <el-tag type="success" v-if="scope.row.type == '1'">菜单</el-tag>
+          <el-tag type="danger" v-if="scope.row.type == '2'">按钮</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column prop="icon" label="菜单图标">
+        <template slot-scope="scope">
+          <i :class="scope.row.icon"></i>
+        </template>
+      </el-table-column>
+      <el-table-column prop="name" label="路由名称"> </el-table-column>
+      <el-table-column prop="path" label="路由地址"> </el-table-column>
+      <el-table-column prop="url" label="组件路径"> </el-table-column>
+      <el-table-column prop="menuCode" label="权限字段"> </el-table-column>
+      <el-table-column align="center" width="200" label="操作">
+        <template slot-scope="scope">
+          <el-button
+            type="primary"
+            icon="el-icon-edit"
+            size="small"
+            @click="editMenu(scope.row)"
+          >编辑</el-button>
+          <el-button
+            type="danger"
+            icon="el-icon-delete"
+            size="small"
+            @click="deleteMenu(scope.row)"
+          >删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
       <!-- 新增或编辑弹框 -->
       <sys-dialog
         :title="dialog.title"
@@ -105,6 +150,8 @@
           empty-text="暂无数据"
           :show-checkbox="false"
           :highlight-current="true"
+          default-expand-all
+          :expand-on-click-node="false"
           @node-click="treeClick"
         >
           <div slot-scope="{ node, data }">
@@ -149,6 +196,8 @@
       },
       //上级菜单数据
       parentList: [],
+      //表格数据
+      tableList:[],
       //上级菜单弹框属性
       parentDialog: {
         title: "选择上级菜单",
@@ -240,10 +289,22 @@
         },
       };
     },
+      mounted() {
+      this.$nextTick(() => {
+        this.tableHeight = window.innerHeight - 180;
+      });
+    },
     created() {
       this.getMenuList();
     },
     methods: {
+      //编辑按钮
+    editMenu(row) {
+      console.log(row);
+    },
+    deleteMenu(row) {
+      console.log(row);
+    },
       //树节点加号和减号的点击事件
     openBtn(data) {
       data.open = !data.open;
@@ -278,9 +339,17 @@
     },
     //新增或编辑弹框确认事件
     onConfirm() {
-      this.$refs.addForm.validate((valid) => {
+      this.$refs.addForm.validate(async (valid) => {
         if (valid) {
-          this.dialog.visible = false;
+          let res = null;
+          if(this.addModule.editType == '0'){
+            res = await addMenuApi(this.addModule);
+          }
+          if(res && res.code == 200){
+            this.dialog.visible = false;
+            this.$message.success(res.msg)
+            this.getMenuList();
+          }
         }
       });
     },
@@ -290,16 +359,93 @@
       },
       //新增按钮
       addMenu() {
-        this.dialog.title = "新增菜单";
-        this.dialog.visible = true;
-      },
-      async getMenuList() {
-        let res = await getMenuListApi();
-        console.log(res);
-      },
+        //清空表单数据
+      this.$resetForm("addForm", this.addModel);
+      this.dialog.title = "新增菜单";
+      this.dialog.visible = true;
+      this.addModule.editType = '0';
+    },
+      //获取列表
+    async getMenuList() {
+      let res = await getMenuListApi();
+      if (res && res.code == 200) {
+        this.tableList = res.data;
+      }
+      console.log(res);
+    },
     },
   };
   </script>
   
   <style lang="scss" scoped>
+  ::v-deep .el-tree {
+    // 将每一行的设置为相对定位 方便后面before after 使用绝对定位来固定位置
+    .el-tree-node {
+      position: relative;
+      padding-left: 10px;
+    }
+    // 子集像右偏移 给数线留出距离
+    .el-tree-node__children {
+      padding-left: 20px;
+    }
+    //这是竖线
+    .el-tree-node :last-child:before {
+      height: 40px;
+    }
+    .el-tree > .el-tree-node:before {
+      border-left: none;
+    }
+    .el-tree > .el-tree-node:after {
+      border-top: none;
+    }
+    //这自定义的线 的公共部分
+    .el-tree-node:before,
+    .el-tree-node:after {
+      content: "";
+      left: -4px;
+      position: absolute;
+      right: auto;
+      border-width: 1px;
+    }
+    .tree :first-child .el-tree-node:before {
+      border-left: none;
+    }
+    // 竖线
+    .el-tree-node:before {
+      border-left: 1px dotted #d9d9d9;
+      bottom: 0px;
+      height: 100%;
+      top: -25px;
+      width: 1px;
+    }
+    //横线
+    .el-tree-node:after {
+      border-top: 1px dotted #d9d9d9;
+      height: 20px;
+      top: 14px;
+      width: 24px;
+    }
+    .el-tree-node__expand-icon.is-leaf {
+      width: 8px;
+    }
+    //去掉elementui自带的展开按钮  一个向下的按钮,打开时向右
+    .el-tree-node__content > .el-tree-node__expand-icon {
+      display: none;
+    }
+    //每一行的高度
+    .el-tree-node__content {
+      line-height: 30px;
+      height: 30px;
+      padding-left: 10px !important;
+    }
+  }
+  //去掉最上级的before  after 即是去电最上层的连接线
+  ::v-deep .el-tree > div {
+    &::before {
+      display: none;
+    }
+    &::after {
+      display: none;
+    }
+  }
   </style>
