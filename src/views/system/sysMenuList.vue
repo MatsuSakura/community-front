@@ -446,14 +446,14 @@ export default {
     left: -4px;
     position: absolute;
     right: auto;
-    border-width: 1px;
+    border-width: 2px;
   }
   .tree :first-child .el-tree-node:before {
     border-left: none;
   }
   // 竖线
   .el-tree-node:before {
-    border-left: 1px dotted #d9d9d9;
+    border-left: 2px dotted #d9d9d9;
     bottom: 0px;
     height: 100%;
     top: -25px;
@@ -461,7 +461,7 @@ export default {
   }
   //横线
   .el-tree-node:after {
-    border-top: 1px dotted #d9d9d9;
+    border-top: 2px dotted #d9d9d9;
     height: 20px;
     top: 14px;
     width: 24px;
