@@ -1,16 +1,15 @@
 <template>
-    <el-main>
-      <!-- 顶部新增按钮 -->
-      <el-form size="small">
-        <el-form-item>
-          <el-button type="primary" icon="el-icon-plus" @click="addMenu"
-            >新增</el-button
-          >
-        </el-form-item>
-        <!-- <i class="el-icon-circle-plus-outline"></i> -->
-      </el-form>
-
-      <el-table
+  <el-main>
+    <!-- 新增按钮 -->
+    <el-form size="small">
+      <el-form-item>
+        <el-button type="primary" icon="el-icon-plus" @click="addMenu"
+          >新增</el-button
+        >
+      </el-form-item>
+      <!-- <i class="iconfont icon-jia"></i> -->
+    </el-form>
+    <el-table
       :height="tableHeight"
       :data="tableList"
       row-key="menuId"
@@ -54,318 +53,342 @@
       </el-table-column>
     </el-table>
 
-      <!-- 新增或编辑弹框 -->
-      <sys-dialog
-        :title="dialog.title"
-        :height="dialog.height"
-        :width="dialog.width"
-        :visible="dialog.visible"
-        @onConfirm="onConfirm"
-        @onClose="onClose"
-      >
-        <div slot="content">
-          <el-form
-            style="margin-left: 30px"
-            :model="addModule"
-            ref="addForm"
-            :rules="rules"
-            label-width="80px"
-            :inline="true"
-            size="small"
-          >
-            <el-row>
-              <el-col :span="24">
-                <el-form-item prop="type" label="菜单类型">
-                  <el-radio-group v-model="addModule.type" size="small">
-                    <el-radio :label="'0'">目录</el-radio>
-                    <el-radio :label="'1'">菜单</el-radio>
-                    <el-radio :label="'2'">按钮</el-radio>
-                  </el-radio-group>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-form-item prop="parentName" label="上级菜单">
-              <el-input
+    <!-- 新增或编辑弹框 -->
+    <sys-dialog
+      :title="dialog.title"
+      :width="dialog.width"
+      :height="dialog.height"
+      :visible="dialog.visible"
+      @onClose="onClose"
+      @onConfirm="onConfirm"
+    >
+      <div slot="content">
+        <el-form
+          style="margin-left: 40px"
+          :model="addModel"
+          ref="addForm"
+          :rules="rules"
+          label-width="80px"
+          :inline="true"
+          size="normal"
+        >
+          <el-row>
+            <el-col :span="24">
+              <el-form-item prop="type" label="菜单类型">
+                <el-radio-group v-model="addModel.type">
+                  <el-radio :label="'0'">目录</el-radio>
+                  <el-radio :label="'1'">菜单</el-radio>
+                  <el-radio :label="'2'">按钮</el-radio>
+                </el-radio-group>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-form-item prop="parentName" label="上级菜单">
+            <el-input
               @click.native="selectParent"
-              v-model="addModule.parentName"></el-input>
-            </el-form-item>
-            <el-form-item prop="menuLabel" label="菜单名称">
-              <el-input v-model="addModule.menuLabel"></el-input>
-            </el-form-item>
-            <el-form-item
-              v-if="addModule.type != '2'"
-              prop="icon"
-              label="菜单图标"
-            >
-              <el-input v-model="addModule.icon"></el-input>
-            </el-form-item>
-            <el-form-item
-              v-if="addModule.type == '1'"
-              prop="name"
-              label="路由名称"
-            >
-              <el-input v-model="addModule.name"></el-input>
-            </el-form-item>
-            <el-form-item
-              v-if="addModule.type == '1'"
-              prop="path"
-              label="路由地址"
-            >
-              <el-input v-model="addModule.path"></el-input>
-            </el-form-item>
-            <el-form-item
-              v-if="addModule.type == '1'"
-              prop="url"
-              label="组件路径"
-            >
-              <el-input v-model="addModule.url"></el-input>
-            </el-form-item>
-            <el-form-item prop="menuCode" label="权限字段">
-              <el-input v-model="addModule.menuCode"></el-input>
-            </el-form-item>
-            <el-form-item label="权限备注">
-              <el-input v-model="addModule.remark"></el-input>
-            </el-form-item>
-            <el-form-item label="权限序号">
-              <el-input type="number" v-model="addModule.orderNum"></el-input>
-            </el-form-item>
-          </el-form>
-        </div>
-      </sys-dialog>
-      <!-- 上级菜单弹框 -->
+              v-model="addModel.parentName"
+              placeholder="请选择上级菜单"
+              size="small"
+            ></el-input>
+          </el-form-item>
+          <el-form-item prop="menuLabel" label="菜单名称">
+            <el-input
+              v-model="addModel.menuLabel"
+              placeholder="请填写菜单名称"
+              size="small"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="菜单图标">
+            <el-input
+              v-model="addModel.icon"
+              placeholder="请填写菜单图标"
+              size="small"
+            ></el-input>
+          </el-form-item>
+          <el-form-item
+            prop="name"
+            v-if="addModel.type == '1'"
+            label="路由名称"
+          >
+            <el-input
+              v-model="addModel.name"
+              placeholder="请填写路由名称"
+              size="small"
+            ></el-input>
+          </el-form-item>
+          <el-form-item
+            prop="path"
+            v-if="addModel.type == '1'"
+            label="路由地址"
+          >
+            <el-input
+              v-model="addModel.path"
+              placeholder="请填写路由地址"
+              size="small"
+            ></el-input>
+          </el-form-item>
+          <el-form-item prop="url" v-if="addModel.type == '1'" label="组件路径">
+            <el-input
+              v-model="addModel.url"
+              placeholder="请填写组件路径"
+              size="small"
+            ></el-input>
+          </el-form-item>
+          <el-form-item prop="menuCode" label="权限字段">
+            <el-input
+              v-model="addModel.menuCode"
+              placeholder="请填写权限字段"
+              size="small"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="权限备注">
+            <el-input
+              v-model="addModel.remark"
+              placeholder="请填写权限备注"
+              size="small"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="权限序号">
+            <el-input
+              v-model="addModel.orderNum"
+              placeholder="请填写权限序号"
+              size="small"
+            ></el-input>
+          </el-form-item>
+        </el-form>
+      </div>
+    </sys-dialog>
+    <!-- 选择上级部门弹框 -->
     <sys-dialog
       :title="parentDialog.title"
-      :height="parentDialog.height"
       :width="parentDialog.width"
+      :height="parentDialog.height"
       :visible="parentDialog.visible"
-      @onClose="parentClose"
-      @onConfirm="parentConfirm"
+      @onClose="onParentClose"
+      @onConfirm="onParentConfirm"
     >
       <div slot="content">
         <el-tree
           ref="parentTree"
           :data="parentList"
           node-key="menuId"
-          :props="parentProps"
+          :props="defaultProps"
           empty-text="暂无数据"
           :show-checkbox="false"
           :highlight-current="true"
           default-expand-all
           :expand-on-click-node="false"
-          @node-click="treeClick"
+          @node-click="nodeSelect"
         >
           <div slot-scope="{ node, data }">
-            <!-- 如果没有下级，就是最好一层 -->
+            <!-- 如果没有下级，显示文档图标 -->
             <span v-if="data.children.length == 0">
-              <i style="margin-right: 3px" class="el-icon-document"></i>
+              <i style="margin-left: 3px" class="el-icon-document"></i>
             </span>
-            <!-- 有下级，需要判断是展开还是关闭 -->
+            <!-- 有下级，判断是否展开 -->
             <span v-else @click.stop="openBtn(data)">
-              <i 
-              v-if="data.open"
-                style="margin-right: 3px" class="el-icon-circle-plus-outline"></i>
-              <i v-else style="margin-right: 3px" class="el-icon-circle-plus-outline"></i>
+              <i
+                v-if="data.open"
+                style="margin-left: 3px"
+                class="el-icon-zoom-in"
+              ></i>
+              <i v-else style="margin-left: 3px" class="el-icon-zoom-out"></i>
             </span>
-            <!-- 树节点的名称 -->
-            <span>{{ node.label }}</span>
+            <span style="margin-left: 3px">{{ node.label }}</span>
           </div>
         </el-tree>
       </div>
     </sys-dialog>
-    </el-main>
-  </template>
-  
-  <script>
-  import { getMenuListApi, addMenuApi,getParentApi } from "@/api/menu";
-  import SysDialog from "@/components/system/SysDialog";
-  export default {
-    //注册组件
-    components: {
-      SysDialog,
-    },
-    data() {
-      return {
-        selectNode:{
-        menuId:'',
-        menuName:''
-      },
+  </el-main>
+</template>
+
+<script>
+import { getMenuListApi, addMenuApi, getParentApi } from "@/api/menu";
+import SysDialog from "@/components/system/SysDialog";
+export default {
+  //注册组件
+  components: {
+    SysDialog,
+  },
+  data() {
+    return {
+      //表格高度
+      tableHeight: 0,
       //上级菜单树属性配置
-      parentProps: {
+      defaultProps: {
         children: "children",
         label: "menuLabel",
       },
-      //上级菜单数据
+      //上级部门树数据
       parentList: [],
-      //表格数据
-      tableList:[],
-      //上级菜单弹框属性
+      //上级部门弹框属性
       parentDialog: {
-        title: "选择上级菜单",
+        title: "选择上级部门",
         width: 300,
         height: 450,
         visible: false,
       },
-        //表单验证规则
-        rules: {
-          type: [
-            {
-              required: true,
-              trigger: "change",
-              message: "请选择菜单类型",
-            },
-          ],
-          parentName: [
-            {
-              required: true,
-              trigger: "change",
-              message: "请选择上级菜单",
-            },
-          ],
-          menuLabel: [
-            {
-              required: true,
-              trigger: "change",
-              message: "请填写菜单名称",
-            },
-          ],
-          icon: [
-            {
-              required: true,
-              trigger: "change",
-              message: "请填写图标",
-            },
-          ],
-          name: [
-            {
-              required: true,
-              trigger: "change",
-              message: "请填写路由名称",
-            },
-          ],
-          path: [
-            {
-              required: true,
-              trigger: "change",
-              message: "请填写路由地址",
-            },
-          ],
-          url: [
-            {
-              required: true,
-              trigger: "change",
-              message: "请填写组件路径",
-            },
-          ],
-          menuCode: [
-            {
-              required: true,
-              trigger: "change",
-              message: "请填写权限字段",
-            },
-          ],
-        },
-        //新增或编辑数据绑定
-        addModule: {
-          editType: "",
-          menuId: "",
-          parentId: "",
-          menuLabel: "",
-          menuCode: "",
-          name: "",
-          path: "",
-          url: "",
-          type: "",
-          icon: "",
-          remark: "",
-          parentName: "",
-          orderNum: "",
-        },
-        //弹框属性
-        dialog: {
-          title: "",
-          height: 310,
-          width: 660,
-          visible: false,
-        },
-      };
-    },
-      mounted() {
-      this.$nextTick(() => {
-        this.tableHeight = window.innerHeight - 180;
-      });
-    },
-    created() {
-      this.getMenuList();
-    },
-    methods: {
-      //编辑按钮
+      //表单验证规则
+      rules: {
+        type: [
+          {
+            required: true,
+            trigger: "change",
+            message: "请选择菜单类型",
+          },
+        ],
+        parentName: [
+          {
+            required: true,
+            trigger: "change",
+            message: "请选择上级菜单",
+          },
+        ],
+        menuLabel: [
+          {
+            required: true,
+            trigger: "change",
+            message: "请填写菜单名称",
+          },
+        ],
+        name: [
+          {
+            required: true,
+            trigger: "change",
+            message: "请填写路由名称",
+          },
+        ],
+        path: [
+          {
+            required: true,
+            trigger: "change",
+            message: "请填写路由地址",
+          },
+        ],
+        url: [
+          {
+            required: true,
+            trigger: "change",
+            message: "请填写组件路径",
+          },
+        ],
+        menuCode: [
+          {
+            required: true,
+            trigger: "change",
+            message: "请填写权限字段",
+          },
+        ],
+      },
+      //新增或编辑绑定的数据
+      addModel: {
+        editType: "", //标识  0：新增 1：编辑
+        menuId: "",
+        parentId: "",
+        menuLabel: "",
+        menuCode: "",
+        name: "",
+        path: "",
+        url: "",
+        type: "",
+        icon: "",
+        remark: "",
+        parentName: "",
+        orderNum: "",
+      },
+      //新增或编辑弹框属性
+      dialog: {
+        title: "",
+        width: 700,
+        height: 380,
+        visible: false,
+      },
+      //表格数据
+      tableList: [],
+      selectNode: {
+        menuId: "",
+        menuLabel: "",
+      },
+    };
+  },
+  created() {
+    this.getMenuList();
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.tableHeight = window.innerHeight - 180;
+    });
+  },
+  methods: {
+    //编辑按钮
     editMenu(row) {
       console.log(row);
     },
     deleteMenu(row) {
       console.log(row);
     },
-      //树节点加号和减号的点击事件
+    //上级部门节点加号和减号点击事件
     openBtn(data) {
       data.open = !data.open;
       this.$refs.parentTree.store.nodesMap[data.menuId].expanded = !data.open;
     },
-    //上级菜单节点点击事件
-    treeClick(node) {
+    //上级树节点点击事件
+    nodeSelect(node) {
       console.log(node);
       this.selectNode.menuId = node.menuId;
-      this.selectNode.menuName = node.menuLabel;
+      this.selectNode.menuLabel = node.menuLabel;
     },
-    //上级弹框确认
-    parentConfirm() {
-      this.addModule.parentId = this.selectNode.menuId;
-      this.addModule.parentName = this.selectNode.menuName;
-      this.parentDialog.visible = false;
-    },
-    //上级弹框关闭
-    parentClose() {
-      this.parentDialog.visible = false;
-    },
-    //选择上级菜单
+    //选择上级部门点击事件
     async selectParent() {
-      //获取上级菜单数据
+      //获取上班部门树数据
       let res = await getParentApi();
       if (res && res.code == 200) {
-        // console.log(res)
+        console.log(res);
         this.parentList = res.data;
-        console.log(this.parentList);
       }
       this.parentDialog.visible = true;
     },
-    //新增或编辑弹框确认事件
+    //上级部门弹框确认事件
+    onParentConfirm() {
+      this.addModel.parentId = this.selectNode.menuId;
+      this.addModel.parentName = this.selectNode.menuLabel;
+      console.log(this.addModel);
+      this.parentDialog.visible = false;
+    },
+    //上级部门弹框关闭事件
+    onParentClose() {
+      this.parentDialog.visible = false;
+    },
+    //新增或编辑确认事件
     onConfirm() {
       this.$refs.addForm.validate(async (valid) => {
         if (valid) {
           let res = null;
-          if(this.addModule.editType == '0'){
-            res = await addMenuApi(this.addModule);
+          if (this.addModel.editType == "0") {
+            res = await addMenuApi(this.addModel);
           }
-          if(res && res.code == 200){
-            this.dialog.visible = false;
-            this.$message.success(res.msg)
+          if (res && res.code == 200) {
+            //刷新列表
             this.getMenuList();
+            this.dialog.visible = false;
+            this.$message.success(res.msg);
           }
         }
       });
     },
-      //新增或编辑弹框取消事件
-      onClose() {
-        this.dialog.visible = false;
-      },
-      //新增按钮
-      addMenu() {
-        //清空表单数据
+    //弹框新增或编辑关闭事件
+    onClose() {
+      this.dialog.visible = false;
+    },
+    //新增按钮
+    addMenu() {
+      //清空表单数据
       this.$resetForm("addForm", this.addModel);
       this.dialog.title = "新增菜单";
+      this.addModel.editType = "0";
       this.dialog.visible = true;
-      this.addModule.editType = '0';
     },
-      //获取列表
+    //获取列表
     async getMenuList() {
       let res = await getMenuListApi();
       if (res && res.code == 200) {
@@ -373,79 +396,79 @@
       }
       console.log(res);
     },
-    },
-  };
-  </script>
-  
-  <style lang="scss" scoped>
-  ::v-deep .el-tree {
-    // 将每一行的设置为相对定位 方便后面before after 使用绝对定位来固定位置
-    .el-tree-node {
-      position: relative;
-      padding-left: 10px;
-    }
-    // 子集像右偏移 给数线留出距离
-    .el-tree-node__children {
-      padding-left: 20px;
-    }
-    //这是竖线
-    .el-tree-node :last-child:before {
-      height: 40px;
-    }
-    .el-tree > .el-tree-node:before {
-      border-left: none;
-    }
-    .el-tree > .el-tree-node:after {
-      border-top: none;
-    }
-    //这自定义的线 的公共部分
-    .el-tree-node:before,
-    .el-tree-node:after {
-      content: "";
-      left: -4px;
-      position: absolute;
-      right: auto;
-      border-width: 1px;
-    }
-    .tree :first-child .el-tree-node:before {
-      border-left: none;
-    }
-    // 竖线
-    .el-tree-node:before {
-      border-left: 1px dotted #d9d9d9;
-      bottom: 0px;
-      height: 100%;
-      top: -25px;
-      width: 1px;
-    }
-    //横线
-    .el-tree-node:after {
-      border-top: 1px dotted #d9d9d9;
-      height: 20px;
-      top: 14px;
-      width: 24px;
-    }
-    .el-tree-node__expand-icon.is-leaf {
-      width: 8px;
-    }
-    //去掉elementui自带的展开按钮  一个向下的按钮,打开时向右
-    .el-tree-node__content > .el-tree-node__expand-icon {
-      display: none;
-    }
-    //每一行的高度
-    .el-tree-node__content {
-      line-height: 30px;
-      height: 30px;
-      padding-left: 10px !important;
-    }
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+::v-deep .el-tree {
+  // 将每一行的设置为相对定位 方便后面before after 使用绝对定位来固定位置
+  .el-tree-node {
+    position: relative;
+    padding-left: 10px;
   }
-  //去掉最上级的before  after 即是去电最上层的连接线
-  ::v-deep .el-tree > div {
-    &::before {
-      display: none;
-    }
-    &::after {
-      display: none;
-    }
+  // 子集像右偏移 给数线留出距离
+  .el-tree-node__children {
+    padding-left: 20px;
   }
-  </style>
+  //这是竖线
+  .el-tree-node :last-child:before {
+    height: 40px;
+  }
+  .el-tree > .el-tree-node:before {
+    border-left: none;
+  }
+  .el-tree > .el-tree-node:after {
+    border-top: none;
+  }
+  //这自定义的线 的公共部分
+  .el-tree-node:before,
+  .el-tree-node:after {
+    content: "";
+    left: -4px;
+    position: absolute;
+    right: auto;
+    border-width: 1px;
+  }
+  .tree :first-child .el-tree-node:before {
+    border-left: none;
+  }
+  // 竖线
+  .el-tree-node:before {
+    border-left: 1px dotted #d9d9d9;
+    bottom: 0px;
+    height: 100%;
+    top: -25px;
+    width: 1px;
+  }
+  //横线
+  .el-tree-node:after {
+    border-top: 1px dotted #d9d9d9;
+    height: 20px;
+    top: 14px;
+    width: 24px;
+  }
+  .el-tree-node__expand-icon.is-leaf {
+    width: 8px;
+  }
+  //去掉elementui自带的展开按钮  一个向下的按钮,打开时向右
+  .el-tree-node__content > .el-tree-node__expand-icon {
+    display: none;
+  }
+  //每一行的高度
+  .el-tree-node__content {
+    line-height: 30px;
+    height: 30px;
+    padding-left: 10px !important;
+  }
+}
+//去掉最上级的before  after 即是去电最上层的连接线
+::v-deep .el-tree > div {
+  &::before {
+    display: none;
+  }
+  &::after {
+    display: none;
+  }
+}
+</style>
