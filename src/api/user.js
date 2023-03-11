@@ -19,12 +19,9 @@ export async function deleteUserApi(parm){
   return await http.delete(parm)
 }
 
-export function login(data) {
-  return request({
-    url: '/vue-admin-template/user/login',
-    method: 'post',
-    data
-  })
+//员工登录
+export async function login(parm){
+  return await http.post("/api/user/login",parm)
 }
 
 export function getInfo(token) {

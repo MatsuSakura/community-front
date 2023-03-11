@@ -50,6 +50,7 @@
   </div>
 </template>
 <script>
+import { loginApi } from "@/api/user";
 export default {
   data() {
     return {
@@ -87,9 +88,20 @@ export default {
   created() {},
   methods: {
     async submit() {
-      this.$refs.loginForm.validate((valid) => {
+      //表单验证
+      this.$refs.loginForm.validate(async (valid) => {
         if (valid) {
-          this.$router.push("home");
+          this.loading = true;
+          //调用store中的login方法
+          this.$store
+            .dispatch("user/login", this.loginForm)
+            .then(() => {
+              this.$router.push({ path: this.redirect || "/" });
+              this.loading = false;
+            })
+            .catch(() => {
+              this.loading = false;
+            });
         }
       });
     },
