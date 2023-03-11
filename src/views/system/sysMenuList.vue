@@ -16,7 +16,6 @@
       :tree-props="{ children: 'children' }"
       border
       stripe
-      default-expand-all
     >
       <el-table-column prop="menuLabel" label="菜单名称"></el-table-column>
       <el-table-column prop="type" label="菜单类型">
@@ -203,7 +202,7 @@
 </template>
 
 <script>
-import { getMenuListApi, addMenuApi, getParentApi } from "@/api/menu";
+import { getMenuListApi, addMenuApi, getParentApi,editMenuApi,deleteMenuApi } from "@/api/menu";
 import SysDialog from "@/components/system/SysDialog";
 export default {
   //注册组件
@@ -322,10 +321,27 @@ export default {
   methods: {
     //编辑按钮
     editMenu(row) {
-      console.log(row);
+      //清空表单
+      this.$resetForm("addForm", this.addModel);
+      //把当前编辑的数据复制到表单数据域
+      this.$objCoppy(row, this.addModel);
+      //设置编辑的标识
+      this.addModel.editType = "1";
+      //设置弹框属性
+      this.dialog.title = "编辑菜单";
+      this.dialog.visible = true;
     },
-    deleteMenu(row) {
+    async deleteMenu(row) {
       console.log(row);
+      let confirm = await this.$myconfirm("确定删除该数据吗?");
+      if (confirm) {
+        let res = await deleteMenuApi({ menuId: row.menuId });
+        if(res && res.code == 200){
+          //刷新表格
+          this.getMenuList();
+          this.$message.success(res.msg);
+        }
+      }
     },
     //上级部门节点加号和减号点击事件
     openBtn(data) {
@@ -366,6 +382,8 @@ export default {
           let res = null;
           if (this.addModel.editType == "0") {
             res = await addMenuApi(this.addModel);
+          }else {
+            res = await editMenuApi(this.addModel);
           }
           if (res && res.code == 200) {
             //刷新列表

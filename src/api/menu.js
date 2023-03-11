@@ -13,3 +13,11 @@ export async function getMenuListApi(){
 export async function getParentApi(){
     return await http.get("/api/menu/parent")
 }
+//编辑权限
+export async function editMenuApi(parm){
+    return await http.put("/api/menu",parm)
+}
+//删除权限
+export async function deleteMenuApi(parm){
+    return await http.delete("/api/menu",parm)
+}
