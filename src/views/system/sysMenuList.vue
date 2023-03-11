@@ -190,9 +190,9 @@
               <i
                 v-if="data.open"
                 style="margin-left: 3px"
-                class="el-icon-zoom-in"
+                class="el-icon-circle-plus-outline"
               ></i>
-              <i v-else style="margin-left: 3px" class="el-icon-zoom-out"></i>
+              <i v-else style="margin-left: 3px" class="el-icon-remove-outline"></i>
             </span>
             <span style="margin-left: 3px">{{ node.label }}</span>
           </div>
@@ -303,7 +303,7 @@ export default {
         height: 380,
         visible: false,
       },
-      //表格数据
+      //表格数据   
       tableList: [],
       selectNode: {
         menuId: "",
