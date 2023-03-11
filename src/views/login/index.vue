@@ -108,7 +108,7 @@ export default {
 
 .loginForm {
   height: 350px;
-  width: 450px;
+  width: 400px;
   border-radius: 10px;
   box-shadow: 0 0 25px #cac6c6;
   padding: 20px 35px;
@@ -124,5 +124,6 @@ export default {
 }
 .my-button {
   width: 100%;
+  height: 40px
 }
 </style>
