@@ -20,18 +20,21 @@ router.beforeEach(async(to, from, next) => {
   // determine whether the user has logged in
   const hasToken = getToken()
 
+  //判断是否存在token
   if (hasToken) {
+    //是否从登录而来
     if (to.path === '/login') {
       // if is logged in, redirect to the home page
       next({ path: '/' })
       NProgress.done()
     } else {
+      //从vuex中获取用户信息
       const hasGetUserInfo = store.getters.name
       if (hasGetUserInfo) {
         next()
       } else {
         try {
-          // get user info
+          // 如果用户信息不存在，从服务器获取用户信息
           await store.dispatch('user/getInfo')
 
           next()

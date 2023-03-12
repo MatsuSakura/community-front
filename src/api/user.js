@@ -1,5 +1,6 @@
 import request from '@/utils/request'
 import http from '@/utils/http'
+import { getUserId } from '@/utils/auth'
 //获取员工列表
 export async function getUserListApi(param){
   return await http.get("/api/user/list",param)
@@ -21,15 +22,15 @@ export async function deleteUserApi(parm){
 
 //员工登录
 export async function login(parm){
+  console.log(parm);
   return await http.post("/api/user/login",parm)
 }
 
-export function getInfo(token) {
-  return request({
-    url: '/vue-admin-template/user/info',
-    method: 'get',
-    params: { token }
-  })
+export async function getInfo() {
+  let parm={
+    userId:getUserId()
+  }
+  return await http.get("/api/user/getInfo",parm)
 }
 
 export function logout() {

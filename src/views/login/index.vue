@@ -39,7 +39,7 @@
       <el-form-item label>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-button @click="submit()" class="my-button" type="primary">登录</el-button>
+            <el-button @click="onSubmit" class="my-button" type="primary">登录</el-button>
           </el-col>
           <el-col :span="12">
             <el-button class="my-button">取消</el-button>
@@ -51,6 +51,7 @@
 </template>
 <script>
 import { loginApi } from "@/api/user";
+import { async } from "q";
 export default {
   data() {
     return {
@@ -87,15 +88,13 @@ export default {
   },
   created() {},
   methods: {
-    async submit() {
+   onSubmit() {
       //表单验证
-      this.$refs.loginForm.validate(async (valid) => {
+      this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true;
           //调用store中的login方法
-          this.$store
-            .dispatch("user/login", this.loginForm)
-            .then(() => {
+          this.$store.dispatch("user/login", this.loginForm).then(() => {
               this.$router.push({ path: this.redirect || "/" });
               this.loading = false;
             })

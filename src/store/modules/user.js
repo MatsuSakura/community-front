@@ -1,5 +1,5 @@
 import { login, logout, getInfo } from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getToken, setToken, removeToken,setUserId} from '@/utils/auth'
 import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
@@ -30,14 +30,16 @@ const mutations = {
 const actions = {
 // user login
 login({ commit }, userInfo) {
+  //解构出用户信息
   const { username, password,userType } = userInfo
   return new Promise((resolve, reject) => {
-    login({ username: username.trim(), password: password,userType:userType }).then(response => {
-      console.log(response)
+    //调用api/user中的login方法
+    login({ username: username.trim(), password: password ,userType:userType}).then(response => {
       const { data } = response
-      console.log(data)
       commit('SET_TOKEN', data.token)
       setToken(data.token)
+      //保存用户id到cookies
+      setUserId(data.userId);
       resolve()
     }).catch(error => {
       reject(error)
@@ -45,9 +47,10 @@ login({ commit }, userInfo) {
   })
 },
 
-  // get user info
+  // 获取用户信息
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
+      //调用api中的getInfo
       getInfo(state.token).then(response => {
         const { data } = response
 
