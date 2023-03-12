@@ -15,3 +15,11 @@ export async function editRoleApi(parm){
 export async function deleteRoleApi(parm){
     return await http.delete("/api/role",parm)
 }
+//分配角色回显查询
+export async function getAssignTreeApi(parm){
+    return await http.get("/api/role/getAssignTree",parm)
+}
+//保存权限
+export async function assignSaveApi(parm){
+    return await http.post("/api/role/saveAssignTree",parm)
+}

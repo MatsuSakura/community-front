@@ -28,9 +28,10 @@
       <el-table :height="tableHeight" size="medium" :data="roleList" border stripe>
         <el-table-column label="角色名称" prop="roleName"></el-table-column>
         <el-table-column label="备注" prop="remark"></el-table-column>
-        <el-table-column align="center" width="200" label="操作">
+        <el-table-column align="center" width="290" label="操作">
           <template slot-scope="scope">
             <el-button type="primary" icon="el-icon-edit" size="small" @click="editRole(scope.row)">编辑</el-button>
+            <el-button type="success"  icon="el-icon-edit" size="small" @click="assignRole(scope.row)">分配权限</el-button>
             <el-button type="danger" icon="el-icon-delete" size="small" @click="deleteRole(scope.row)">删除</el-button>
             
           </template>
@@ -75,12 +76,39 @@
           </el-form>
         </div>
       </sys-dialog>
+    <!-- 分配权限弹框 -->
+    <sys-dialog
+      :title="assignDialog.title"
+      :height="assignDialog.height"
+      :width="assignDialog.width"
+      :visible="assignDialog.visible"
+      @onClose="assignClose"
+      @onConfirm="assignConfirm"
+    >
+      <template slot="content">
+        <span>
+          <el-tree
+            ref="assignTree"
+            default-expand-all
+            :default-checked-keys="assignTreeChecked"
+            :data="assignTreeData"
+            node-key="menuId"
+            :props="defaultProps"
+            empty-text="暂无数据"
+            :show-checkbox="true"
+          ></el-tree>
+        </span>
+      </template>
+    </sys-dialog>
     </el-main>
   </template>
   
   <script>
-  import { getRoleListApi,addRoleApi,editRoleApi,deleteRoleApi } from "@/api/role";
+  import { getRoleListApi,addRoleApi,editRoleApi,deleteRoleApi,
+    getAssignTreeApi,assignSaveApi
+  } from "@/api/role";
   import SysDialog from "@/components/system/SysDialog";
+  import { getUserId } from "@/utils/auth";
   export default {
     //注册组件
     components: {
@@ -89,6 +117,21 @@
     //所有需要在页面展示的数据，都要显示的在data里面进行定义
     data() {
       return {
+        defaultProps:{
+          children:"children",
+          label:"menuLabel"
+        },
+        roleId:"",
+        //分配权限树数据
+        assignTreeData:[],
+        //树默认选中的节点
+        assignTreeChecked:[],
+        assignDialog:{
+          title:"",
+          width:300,
+          height:500,
+          visible:false
+        },
         //表单验证规则
         rules:{
           roleName:[{
@@ -133,6 +176,75 @@
       });
     },
     methods: {
+          //分配权限确认
+    async assignConfirm() {
+      //获取选中的节点id
+      let ids = this.$refs.assignTree
+        .getCheckedKeys()
+        .concat(this.$refs.assignTree.getHalfCheckedKeys());
+      console.log(ids);
+      let parm = {
+        roleId: this.roleId,
+        list: ids,
+      };
+      let res = await assignSaveApi(parm);
+      console.log(res);
+      if (res && res.code == 200) {
+        this.$message.success(res.msg);
+        this.assignDialog.visible = false;
+      }
+    },
+    //分配权限取消
+    assignClose() {
+      this.assignDialog.visible = false;
+    },
+    
+      //分配权限按钮
+    async assignRole(row) {
+      //清空数据
+      this.assignTreeData = [];
+      this.assignTreeChecked = [];
+      this.roleId = row.roleId;
+      //设置弹框属性
+      this.assignDialog.title = "为【" + row.roleName + "】分配权限";
+      this.assignDialog.visible = true;
+
+      //获取树的数据
+      let parm = {
+        userId: getUserId(),
+        roleId: row.roleId,
+      };
+      let res = await getAssignTreeApi(parm);
+      if (res && res.code == 200) {
+        console.log(res);
+        //赋值
+        this.assignTreeData = res.data.listmenu;
+        this.assignTreeChecked = res.data.checkList;
+        console.log(this.assignTreeChecked);
+      }
+      //如果默认选中有数据
+      if (this.assignTreeChecked.length > 0) {
+        let newArr = [];
+        this.assignTreeChecked.forEach((item) => {
+          this.checked(item, this.assignTreeData, newArr);
+        });
+        this.assignTreeChecked = newArr;
+        console.log(newArr)
+      }
+    },
+    checked(id, data, newArr) {
+      data.forEach((item) => {
+        if (item.menuId == id) {
+          if (item.children && item.children.length == 0) {
+            newArr.push(item.menuId);
+          }
+        } else {
+          if (item.children && item.children.length != 0) {
+            this.checked(id, item.children, newArr);
+          }
+        }
+      });
+    },
       //删除按钮
       async deleteRole(row) {
       let confrim = await this.$myconfirm("确定删除该数据吗？");
