@@ -8,10 +8,10 @@
         :inline="true"
         size="small"
       >
-        <el-form-item label="栋数名称">
+        <el-form-item label="楼栋名称">
           <el-input v-model="parm.name"></el-input>
         </el-form-item>
-        <el-form-item label="栋数类型">
+        <el-form-item label="楼栋类型">
           <el-select v-model="parm.type" placeholder="" clearable filterable>
             <el-option
               v-for="item in options"
@@ -32,13 +32,13 @@
       </el-form>
       <!-- 表格列表 -->
       <el-table :height="tableHeight" :data="tableList" border stripe>
-        <el-table-column prop="name" label="栋数名称"></el-table-column>
+        <el-table-column prop="name" label="楼栋名称"></el-table-column>
         <el-table-column prop="orderNum" label="序号"></el-table-column>
-        <el-table-column prop="type" label="栋数类型">
+        <el-table-column prop="type" label="楼栋类型">
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.type == '0'" type="" size="small">平房</el-tag>
-            <el-tag v-if="scope.row.type == '1'" type="danger" size="small">楼房</el-tag>
-            <el-tag v-if="scope.row.type == '2'" type="success" size="small">别墅</el-tag>
+            <el-tag v-if="scope.row.type == '0'" type="" >平房</el-tag>
+            <el-tag v-if="scope.row.type == '1'" type="danger" >楼房</el-tag>
+            <el-tag v-if="scope.row.type == '2'" type="success" >别墅</el-tag>
           </template>
         </el-table-column>
         <el-table-column width="180" label="操作">
@@ -126,14 +126,14 @@
             {
               trigger: "change",
               required: true,
-              message: "请填写栋数名称",
+              message: "请填写楼栋名称",
             },
           ],
           type: [
             {
               trigger: "change",
               required: true,
-              message: "请选择栋数类型",
+              message: "请选择楼栋类型",
             },
           ],
         },
@@ -174,7 +174,7 @@
         parm: {
           name: "",
           type: "",
-          pageSize: 5,
+          pageSize: 10,
           currentPage: 1,
           total: 0,
         },
