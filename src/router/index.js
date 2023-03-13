@@ -87,7 +87,7 @@ export const constantRoutes = [
     component: Layout,
     alwaysShow: true,
     name: 'house',
-    meta: { title: '社区管理', icon: 'el-icon-s-order' },
+    meta: { title: '房屋管理', icon: 'el-icon-s-order' },
     children: [
       {
         path: '/houseBuilding',
