@@ -39,3 +39,12 @@ export function logout() {
     method: 'post'
   })
 }
+
+//根据用户id查询角色id
+export async function getRoleByUserIdApi(parm){
+  return await http.get("/api/user/getRoleByUserId",parm);
+}
+//分配角色保存
+export async function assignSaveApi(parm){
+  return await http.post("/api/user/saveRole",parm)
+}

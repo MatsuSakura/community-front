@@ -90,22 +90,22 @@ export const constantRoutes = [
     meta: { title: '社区管理', icon: 'el-icon-s-order' },
     children: [
       {
-        path: '/sysVillageList',
-        name: 'sysVillageList',
-        component: () => import('@/views/community/sysVillageList'),
-        meta: { title: '村庄管理', icon: 'el-icon-s-home' }
-      },
-      {
-        path: '/sysBuildingList',
-        name: 'sysBuildingList',
-        component: () => import('@/views/community/sysBuildingList'),
+        path: '/communityList',
+        name: 'communityList',
+        component: () => import('@/views/community/communityList'),
         meta: { title: '楼栋管理', icon: 'el-icon-s-home' }
       },
       {
-        path: '/sysHouseList',
-        name: 'sysHouseList',
-        component: () => import('@/views/community/sysHouseList'),
-        meta: { title: '房屋列表', icon: 'el-icon-s-home' }
+        path: '/UnitList',
+        name: 'UnitList',
+        component: () => import('@/views/community/UnitList'),
+        meta: { title: '单元管理', icon: 'el-icon-s-home' }
+      },
+      {
+        path: '/houseList',
+        name: 'houseList',
+        component: () => import('@/views/community/houseList'),
+        meta: { title: '房屋管理', icon: 'el-icon-s-home' }
       }
     ]
   },
