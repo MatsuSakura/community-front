@@ -83,28 +83,28 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/community',
+    path: '/house',
     component: Layout,
     alwaysShow: true,
-    name: 'community',
+    name: 'house',
     meta: { title: '社区管理', icon: 'el-icon-s-order' },
     children: [
       {
-        path: '/communityList',
-        name: 'communityList',
-        component: () => import('@/views/community/communityList'),
+        path: '/houseBuilding',
+        name: 'houseBuilding',
+        component: () => import('@/views/house/houseBuilding'),
         meta: { title: '楼栋管理', icon: 'el-icon-s-home' }
       },
       {
-        path: '/UnitList',
-        name: 'UnitList',
-        component: () => import('@/views/community/UnitList'),
+        path: '/houseUnit',
+        name: 'houseUnit',
+        component: () => import('@/views/house/houseUnit'),
         meta: { title: '单元管理', icon: 'el-icon-s-home' }
       },
       {
         path: '/houseList',
         name: 'houseList',
-        component: () => import('@/views/community/houseList'),
+        component: () => import('@/views/house/houseList'),
         meta: { title: '房屋管理', icon: 'el-icon-s-home' }
       }
     ]
