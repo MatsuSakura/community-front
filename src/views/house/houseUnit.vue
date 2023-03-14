@@ -196,7 +196,7 @@
         if(res && res.code == 200){
           //刷新表格
           this.getList();
-          this.$message.success(this.msg)
+          this.$message.success(res.msg)
         }
       }
     },
