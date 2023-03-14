@@ -65,7 +65,7 @@
         @size-change="sizeChange"
         @current-change="currentChange"
         :current-page.sync="parm.currentPage"
-        :page-sizes="[5,10,15,20]"
+        :page-sizes="[5,10,15,20,30]"
         :page-size="parm.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="parm.total"
