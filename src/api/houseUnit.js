@@ -7,6 +7,9 @@ export async function getListApi(parm){
 export async function getBuildListApi(parm){
     return await http.get("/api/houseBuild/list",parm);
 }
+export async function getUnitListApi(){
+    return await http.get("/api/houseUnit/unitList",null);
+}
 //新增
 export async function addApi(parm){
     return await http.post("/api/houseUnit",parm)

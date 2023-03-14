@@ -8,7 +8,7 @@
         :inline="true"
         size="small"
       >
-        <el-form-item label="栋数名称">
+        <el-form-item label="楼栋名称">
           <el-input v-model="parms.buildNme"></el-input>
         </el-form-item>
         <el-form-item label="单元名称">
@@ -24,14 +24,14 @@
       </el-form>
       <!-- 表格 -->
       <el-table :height='tableHeight' :data="tableList" border stripe>
-        <el-table-column prop="name" label="栋数名称"></el-table-column>
+        <el-table-column prop="name" label="楼栋名称"></el-table-column>
         <el-table-column prop="unitName" label="单元名称"></el-table-column>
         <el-table-column width="180" label="操作">
           <template slot-scope="scope">
-            <el-button type="primary" size="small" @click="editBtn(scope.row)"
+            <el-button icon="el-icon-edit" type="primary" size="small" @click="editBtn(scope.row)"
               >编辑</el-button
             >
-            <el-button type="danger" size="small" @click="deleteBtn(scope.row)"
+            <el-button icon="el-icon-delete" type="danger" size="small" @click="deleteBtn(scope.row)"
               >删除</el-button
             >
           </template>
@@ -65,7 +65,7 @@
           :inline="true"
           size="small"
         >
-          <el-form-item prop="buildId" label="单元名称">
+          <el-form-item prop="buildId" label="楼栋名称">
             <el-select v-model="addModel.buildId">
               <el-option
                 v-for="item in bulidTabeList"
@@ -86,7 +86,8 @@
   </template>
   
   <script>
-  import { getListApi,getBuildListApi,addApi } from "@/api/houseUnit";
+  import { getListApi,getBuildListApi,addApi,getUnitListApi,
+    editApi, deleteApi } from "@/api/houseUnit";
   import SysDialog from "@/components/system/SysDialog.vue";
   export default {
     components: {
@@ -99,7 +100,7 @@
           {
             trigger: "change",
             required: true,
-            message: "请选择栋数",
+            message: "请选择所属楼栋",
           },
         ],
         unitName: [
@@ -154,19 +155,21 @@
       })
     },
     methods: {
-        //新增或编辑确认事件
+    //新增或编辑确认事件
     onConfirm() {
-      this.$refs.addForm.validate(async(valid) => {
+      this.$refs.addForm.validate(async (valid) => {
         if (valid) {
           let res = null;
-          if(this.addModel.editType == '0'){
+          if (this.addModel.editType == "0") {
             res = await addApi(this.addModel);
+          } else {
+            res = await editApi(this.addModel);
           }
-          if(res && res.code == 200){
+          if (res && res.code == 200) {
             //刷新表格
             this.getList();
-            this.$message.success(res.msg)
-             this.addDialog.visible = false;
+            this.$message.success(res.msg);
+            this.addDialog.visible = false;
           }
         }
       });
@@ -177,20 +180,37 @@
     },
       //页数改变时触发
       currentChange(val){
-  
+        this.parms.currentPage=val;
+        this.getList();
       },
       //页容量改变时触发
       sizeChange(val){
-  
+        this.parms.pageSize=val;
+        this.getList();
       },
       //删除按钮
-      deleteBtn(row){
-  
-      },
+    async deleteBtn(row) {
+      const confirm = await this.$myconfirm('确定删除该数据吗？');
+      if(confirm){
+        let res = await deleteApi({unitId:row.unitId})
+        if(res && res.code == 200){
+          //刷新表格
+          this.getList();
+          this.$message.success(this.msg)
+        }
+      }
+    },
       //编辑按钮
-      editBtn(row){
-  
-      },
+    editBtn(row) {
+      //清空表单
+      this.$resetForm("addForm", this.addModel);
+      //设置弹框属性
+      this.addModel.editType = "1";
+      this.addDialog.title = "编辑单元";
+      this.addDialog.visible = true;
+      //把当前要编辑的数据复制到数据域
+      this.$objCoppy(row, this.addModel);
+    },
       //新增
       addBtn() {
       //清空表单
