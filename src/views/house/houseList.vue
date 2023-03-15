@@ -8,7 +8,7 @@
         :inline="true"
         size="small"
       >
-        <el-form-item label="栋数名称">
+        <el-form-item label="楼栋名称">
           <el-input placeholder="请输入栋数名称" v-model="parms.buildNme"></el-input>
         </el-form-item>
         <el-form-item label="单元名称">
@@ -38,7 +38,7 @@
       </el-form>
       <!-- 表格 -->
       <el-table :height="tableHeight" :data="tableList" border stripe>
-        <el-table-column prop="name" label="栋数名称"></el-table-column>
+        <el-table-column prop="name" label="楼栋名称"></el-table-column>
         <el-table-column prop="unitName" label="单元名称"></el-table-column>
         <el-table-column prop="houseNum" label="房屋编号"></el-table-column>
         <el-table-column prop="houseArea" label="使用面积"></el-table-column>
@@ -101,7 +101,7 @@
             :inline="true"
             size="small"
           >
-            <el-form-item prop="buildvalue" label="所属栋数">
+            <el-form-item prop="buildvalue" label="所属楼栋">
               <el-select v-model="addModel.buildvalue" @change="selectBuild">
                 <el-option
                   v-for="item in buildList"
@@ -264,7 +264,7 @@
         this.addModel.unitId = "";
         //根据栋数id查询对应的单元
         this.getUnitListById(val);
-        console.log(val);
+        // console.log(val);
       },
       //弹框确认
       onConfirm() {
@@ -288,6 +288,7 @@
       //弹框关闭
       onClose() {
         this.addDialog.visible = false;
+        this.addModel.unitId=""
       },
       //页数改变时触发
       currentChange(val) {
@@ -314,25 +315,24 @@
           }
         }
       },
-      //编辑按钮
-      editBtn(row) {
-        //根据栋数id查询单元列表
-        this.getUnitListById(row.buildId);
-        //清空表单
-        this.$resetForm("addForm", this.addModel);
-        //设置弹框属性
-        this.addDialog.title = "编辑房屋";
-        this.addDialog.visible = true;
-  
-        //把当前编辑的行数据设置到表单数据域
-        this.$objCoppy(row, this.addModel);
-        //设置编辑标志
-        this.addModel.editType = "1";
-        console.log(row);
-        console.log(this.addModel);
-        //栋数回显
-        this.addModel.buildvalue = row.name;
-      },
+     //编辑按钮
+    editBtn(row) {
+      //清空表单
+      this.$resetForm("addForm", this.addModel);
+      //设置弹框属性
+      this.addDialog.title = "编辑房屋";
+      this.addDialog.visible = true;
+
+      //把当前编辑的行数据设置到表单数据域
+      this.$objCoppy(row, this.addModel);
+      //设置编辑标志
+      this.addModel.editType = "1";
+      //栋数回显
+      this.addModel.buildvalue = row.name;
+      //根据栋数id查询单元列表
+      this.getUnitListById(row.buildId);
+      this.addModel.unitId=row.unitId
+    },
       //新增按钮
       addBtn() {
         //清空表单
@@ -379,7 +379,6 @@
       //单元列表
       async getUnitListById(buildId) {
         let res = await getUnitListByIdApi({ buildId: buildId });
-        console.log(res);
         if (res && res.code == 200) {
           //赋值给单元列表
           this.unitList = res.data;
