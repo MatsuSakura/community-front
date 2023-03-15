@@ -87,25 +87,40 @@ export const constantRoutes = [
     component: Layout,
     alwaysShow: true,
     name: 'house',
-    meta: { title: '房屋管理', icon: 'el-icon-s-order' },
+    meta: { title: '房屋管理', icon: 'el-icon-s-home' },
     children: [
       {
         path: '/houseBuilding',
         name: 'houseBuilding',
         component: () => import('@/views/house/houseBuilding'),
-        meta: { title: '楼栋管理', icon: 'el-icon-s-home' }
+        meta: { title: '楼栋管理', icon: 'el-icon-s-order' }
       },
       {
         path: '/houseUnit',
         name: 'houseUnit',
         component: () => import('@/views/house/houseUnit'),
-        meta: { title: '单元管理', icon: 'el-icon-s-home' }
+        meta: { title: '单元管理', icon: 'el-icon-s-order' }
       },
       {
         path: '/houseList',
         name: 'houseList',
         component: () => import('@/views/house/houseList'),
-        meta: { title: '房屋管理', icon: 'el-icon-s-home' }
+        meta: { title: '房屋管理', icon: 'el-icon-s-order' }
+      }
+    ]
+  },
+  {
+    path: '/park',
+    component: Layout,
+    alwaysShow: true,
+    name: 'park',
+    meta: { title: '车位管理', icon: 'el-icon-truck' },
+    children: [
+      {
+        path: '/parkList',
+        name: 'parkList',
+        component: () => import('@/views/park/parkList'),
+        meta: { title: '车位管理', icon: 'el-icon-truck' }
       }
     ]
   },
