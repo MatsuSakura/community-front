@@ -29,8 +29,8 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button icon="el-icon-search" @click="searchBtn">搜索</el-button>
-          <el-button style="color: #ff7670" icon="el-icon-close" @click="resetBtn"
+          <el-button icon="el-icon-search" @click="searchBtn">查询</el-button>
+          <el-button icon="el-icon-delete" style="color: #ff7670"  @click="resetBtn"
             >重置</el-button
           >
           <el-button icon="el-icon-plus" type="primary" @click="addBtn">新增</el-button>
