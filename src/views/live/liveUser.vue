@@ -166,9 +166,9 @@
               </el-form-item>
               <el-form-item>
                 <el-button icon="el-icon-search" @click="assignHouseSearchBtn"
-                  >搜索</el-button
+                  >查询</el-button
                 >
-                <el-button icon="el-icon-close" @click="assignHouseResetBtn"
+                <el-button style="color: #ff7670" icon="el-icon-delete" @click="assignHouseResetBtn"
                   >重置</el-button
                 >
               </el-form-item>

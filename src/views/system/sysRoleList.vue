@@ -160,7 +160,7 @@
         tableHeight: 0,
         //查询参数
         parms: {
-          pageSize: 5, //每页显示几条数据
+          pageSize: 10, //每页显示几条数据
           currentPage: 1, //当前第几页
           roleName: "",
           total: 0, //总条数

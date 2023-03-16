@@ -139,6 +139,33 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/fee',
+    component: Layout,
+    alwaysShow: true,
+    name: 'fee',
+    meta: { title: '收费管理', icon: 'el-icon-s-check' },
+    children: [
+      {
+        path: '/feePower',
+        name: 'feePower',
+        component: () => import('@/views/fee/feePower'),
+        meta: { title: '电费管理', icon: 'el-icon-s-finance' }
+      },
+      {
+        path: '/feeWater',
+        name: 'feeWater',
+        component: () => import('@/views/fee/feeWater'),
+        meta: { title: '水费管理', icon: 'el-icon-s-finance' }
+      },
+      {
+        path: '/feePark',
+        name: 'feePark',
+        component: () => import('@/views/fee/feePark'),
+        meta: { title: '停车管理', icon: 'el-icon-s-finance' }
+      }
+    ]
+  },
   
 
   // 404 page must be placed at the end !!!
