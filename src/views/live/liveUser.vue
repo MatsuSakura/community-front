@@ -15,8 +15,8 @@
           <el-input v-model="parms.phone"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button icon="el-icon-search">查询</el-button>
-          <el-button style="color: #ff7670" icon="el-icon-delete">重置</el-button>
+          <el-button icon="el-icon-search" @click="searchBtn">查询</el-button>
+          <el-button style="color: #ff7670" icon="el-icon-delete" @click="resetBtn">重置</el-button>
           <el-button icon="el-icon-plus" type="primary" @click="addBtn">新增</el-button>
         </el-form-item>
       </el-form>
@@ -479,6 +479,16 @@
       });
     },
     methods: {
+      //查询按钮
+    searchBtn() {
+      this.getList();
+    },
+    //重置按钮
+    resetBtn() {
+      this.parms.userName = "";
+      this.parms.phone = "";
+      this.getList();
+    },
       //分配车位页数改变触发
       assignParkCurrentChange(val) {
         this.parkParms.currentPage = val;
@@ -581,11 +591,17 @@
         console.log(this.addModel);
       },
       //删除业主
-      deleteBtn(row) {},
+      deleteBtn(row) {
+
+      },
       //退车位
-      leavePark(row) {},
+      leavePark(row) {
+
+      },
       //退房
-      leaveHose(row) {},
+      leaveHose(row) {
+          
+      },
       //分配车位列表重置事件
       parkResetBtn() {
         this.parkParms.parkName = "";

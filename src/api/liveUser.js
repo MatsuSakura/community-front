@@ -9,7 +9,6 @@ export async function getRoleListApi(){
 }
 //业主列表
 export async function getListApi(parm){
-    console.log(parm)
     return await http.get("/api/liveUser/list",parm)
 }
 //根据id查询用户
