@@ -166,6 +166,21 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/userComplaint',
+    component: Layout,
+    alwaysShow: true,
+    name: 'userComplaint',
+    meta: { title: '投诉管理', icon: 'el-icon-date' },
+    children: [
+      {
+        path: '/userComplaintList',
+        name: 'userComplaintList',
+        component: () => import('@/views/userComplaint/userComplaint'),
+        meta: { title: '投诉列表', icon: 'el-icon-edit-outline' }
+      }
+    ]
+  },
   
 
   // 404 page must be placed at the end !!!
