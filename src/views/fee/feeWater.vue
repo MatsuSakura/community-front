@@ -255,10 +255,7 @@
         },
         //表格高度
         tableHeight: 0,
-        //页数改变时触发
-        currentChange(val) {},
-        //页容量改变时触发
-        sizeChange(val) {},
+        
         //表格参数
         tableList: [],
         //表格参数
@@ -281,6 +278,16 @@
       });
     },
     methods: {
+      //页数改变时触发
+      currentChange(val) {
+          this.parms.currentPage = val;
+          this.getList();
+        },
+        //页容量改变时触发
+        sizeChange(val) {
+          this.parms.pageSize = val;
+          this.getList();
+        },
       //单元点击事件
       async unitSelect(val) {
         this.addModel.houseId = "";
