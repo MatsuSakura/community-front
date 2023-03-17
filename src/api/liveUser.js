@@ -35,3 +35,11 @@ export async function getParkListApi(parm){
 export async function assignParkSaveApi(parm){
     return await http.post("/api/liveUser/assignParkSave",parm)
 }
+//退房
+export async function returnHouseApi(parm){
+    return await http.post("/api/liveUser/returnHose",parm)
+}
+//退车位
+export async function returnParkApi(parm){
+    return await http.post("/api/liveUser/returnPark",parm)
+}
