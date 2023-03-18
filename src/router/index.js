@@ -80,6 +80,13 @@ export const constantRoutes = [
         component: () => import('@/views/system/sysMenuList'),
         meta: { title: '权限管理', icon: 'el-icon-s-tools' }
       }
+      ,
+      {
+        path: '/RelativeList',
+        name: 'RelativeList',
+        component: () => import('@/views/system/RelativeList'),
+        meta: { title: '亲属管理', icon: 'user' }
+      }
     ]
   },
   {
