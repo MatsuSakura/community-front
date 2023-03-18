@@ -34,6 +34,13 @@
         <el-table-column prop="unitName" label="单元"></el-table-column>
         <el-table-column prop="houseNum" label="房屋编号"></el-table-column>
         <el-table-column prop="houseArea" label="使用面积"></el-table-column>
+        <el-table-column prop="healthProblem" label="身体情况"></el-table-column>
+        <el-table-column prop="healthStatus" label="是否有人照料">
+          <template slot-scope="scope">
+            <el-tag type="success" size="normal" v-if="scope.row.healthStatus == '0'">有</el-tag>
+            <el-tag type="danger" size="normal" v-if="scope.row.healthStatus == '1'">无</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column align="center" width="500" label="操作">
           <template slot-scope="scope">
             <el-button type="success" size="small" @click="editBtn(scope.row)"
@@ -119,6 +126,15 @@
               <el-radio-group v-model="addModel.status">
                 <el-radio :label="'0'">启用</el-radio>
                 <el-radio :label="'1'">禁用</el-radio>
+              </el-radio-group>
+            </el-form-item><br>
+            <el-form-item prop="elderHealth" label="基础疾病">
+            <el-input v-model="addModel.healthProblem"></el-input>
+          </el-form-item>
+            <el-form-item prop="elderStatus" label="是否有人照顾">
+              <el-radio-group v-model="addModel.healthStatus">
+                <el-radio :label="'0'">有人照顾</el-radio>
+                <el-radio :label="'1'">无人照顾</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-form>
@@ -244,6 +260,7 @@
     getHouseListApi,
     assignSaveApi,
     returnHouseApi,
+    deleteUserApi
   } from "@/api/liveUser";
   export default {
     components: { SysDialog },
@@ -292,6 +309,8 @@
           roleId: "",
           loginName: "",
           password: "",
+          healthProblem:"",
+          healthStatus:""
         },
         //表单验证规则
         rules: {
@@ -337,6 +356,13 @@
               message: "请选择用户状态",
             },
           ],
+          healthStatus:[
+          {
+              trigger: "change",
+              required: true,
+              message: "请选择陪护状态",
+            },
+          ],
           roleId: [
             {
               trigger: "change",
@@ -348,8 +374,8 @@
         //弹框属性
         addDialog: {
           title: "",
-          height: 220,
-          width: 620,
+          height: 300,
+          width: 640,
           visible: false,
           
         },
@@ -374,8 +400,10 @@
       });
     },
     methods: {
-        assignHelp(){
-
+        assignHelp(id){
+          this.$router.push({
+            path:"/myUserComplaint"
+          })
         },
       //重置按钮
       resetBtn() {
@@ -438,19 +466,20 @@
       async editBtn(row) {
         //清空表单
         this.$resetForm("addForm", this.addModel);
-  
         //获取编辑的数据
         let res = await getUserByIdApi({ userId: row.userId });
         if (res && res.code == 200) {
           console.log(res);
           if (res.data) {
             this.$objCoppy(res.data, this.addModel);
+            this.$objCoppy(res.data, this.addModel2);
           }
         }
         //设置编辑属性
         this.addModel.editType = "1";
+        this.addModel.editType = "2";
         //设置弹框属性
-        this.addDialog.title = "编辑业主";
+        this.addDialog.title = "编辑信息";
         this.addDialog.visible = true;
         console.log(this.addModel);
       },
