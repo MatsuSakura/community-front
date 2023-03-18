@@ -136,6 +136,24 @@ export const constantRoutes = [
         name: 'liveUser',
         component: () => import('@/views/live/liveUser'),
         meta: { title: '业主列表', icon: 'el-icon-s-data' }
+      },
+      {
+        path: '/liveChildren',
+        name: 'liveChildren',
+        component: () => import('@/views/live/liveChildren'),
+        meta: { title: '学童列表', icon: 'el-icon-s-data' }
+      },
+      {
+        path: '/liveWorker',
+        name: 'liveWorker',
+        component: () => import('@/views/live/liveWorker'),
+        meta: { title: '中青年列表', icon: 'el-icon-s-data' }
+      },
+      {
+        path: '/liveElder',
+        name: 'liveElder',
+        component: () => import('@/views/live/liveElder'),
+        meta: { title: '老年人列表', icon: 'el-icon-s-data' }
       }
     ]
   },
@@ -171,13 +189,55 @@ export const constantRoutes = [
     component: Layout,
     alwaysShow: true,
     name: 'userComplaint',
-    meta: { title: '投诉管理', icon: 'el-icon-date' },
+    meta: { title: '建议管理', icon: 'el-icon-date' },
     children: [
       {
         path: '/userComplaintList',
         name: 'userComplaintList',
         component: () => import('@/views/userComplaint/userComplaint'),
-        meta: { title: '投诉列表', icon: 'el-icon-edit-outline' }
+        meta: { title: '建议列表', icon: 'el-icon-edit-outline' }
+      },
+      {
+        path: '/myUserComplaint',
+        name: 'myUserComplaint',
+        component: () => import('@/views/userComplaint/myUserComplaint'),
+        meta: { title: '我的建议', icon: 'el-icon-menu' }
+      }
+    ]
+  },
+  {
+    path: '/repairModel',
+    component: Layout,
+    alwaysShow: true,
+    name: 'repairModel',
+    meta: { title: '维修管理', icon: 'el-icon-brush' },
+    children: [
+      {
+        path: '/repairList',
+        name: 'repairList',
+        component: () => import('@/views/repair/repairList'),
+        meta: { title: '维修列表', icon: 'el-icon-s-marketing' }
+      },
+      {
+        path: '/myRepair',
+        name: 'myRepair',
+        component: () => import('@/views/repair/myRepair'),
+        meta: { title: '我的维修', icon: 'el-icon-picture-outline' }
+      }
+    ]
+  },
+  {
+    path: '/notice',
+    component: Layout,
+    alwaysShow: true,
+    name: 'notice',
+    meta: { title: '公告管理', icon: 'el-icon-document-copy' },
+    children: [
+      {
+        path: '/noticeList',
+        name: 'noticeList',
+        component: () => import('@/views/notice/noticeList'),
+        meta: { title: '公告列表', icon: 'el-icon-s-marketing' }
       }
     ]
   },

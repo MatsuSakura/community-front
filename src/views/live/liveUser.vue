@@ -63,7 +63,7 @@
       @size-change="sizeChange"
       @current-change="currentChange"
       :current-page.sync="parms.currentPage"
-      :page-sizes="[5,10,15,20,30]"
+      :page-sizes="[8,10,15,20,30]"
       :page-size="parms.pageSize"
       layout="total, sizes, prev, pager, next, jumper"
       :total="parms.total"
@@ -102,7 +102,7 @@
             <el-input v-model="addModel.phone"></el-input>
           </el-form-item>
           <el-form-item prop="roleId" label="角色">
-            <el-select v-model="addModel.roleId">
+            <el-select v-model="addModel.roleId" >
               <el-option
                 v-for="item in roleList"
                 :key="item.roleId"
@@ -222,7 +222,7 @@
             @size-change="assignHouseSize"
             @current-change="assignHouseChange"
             :current-page.sync="houseParms.currentPage"
-            :page-sizes="[5,10,15,20,30]"
+            :page-sizes="[8,10,15,20,30]"
             :page-size="houseParms.pageSize"
             layout="total, sizes, prev, pager, next, jumper"
             :total="houseParms.total"
@@ -299,7 +299,7 @@
             @size-change="assignParkSizeChange"
             @current-change="assignParkCurrentChange"
             :current-page.sync="parkParms.currentPage"
-            :page-sizes="[5,10,15,20,30]"
+            :page-sizes="[8,10,15,20,30]"
             :page-size="parkParms.pageSize"
             layout="total, sizes, prev, pager, next, jumper"
             :total="parkParms.total"
@@ -326,6 +326,7 @@ import {
   assignParkSaveApi,
   returnHouseApi,
   returnParkApi,
+  deleteUserApi
 } from "@/api/liveUser";
 export default {
   components: { SysDialog },
@@ -350,7 +351,7 @@ export default {
       //车位查询参数
       parkParms: {
         currentPage: 1,
-        pageSize: 10,
+        pageSize: 8,
         parkName: "",
         parkStatus: "0", //0未使用 1 已使用
         parkType: "",
@@ -379,7 +380,7 @@ export default {
         unitName: "",
         houseNum: "",
         currentPage: 1,
-        pageSize: 10,
+        pageSize: 8,
         total: 0,
       },
       //表格的高度
@@ -464,7 +465,7 @@ export default {
         userName: "",
         phone: "",
         currentPage: 1,
-        pageSize: 10,
+        pageSize: 8,
         total: 0,
       },
     };
@@ -593,7 +594,22 @@ export default {
       console.log(this.addModel);
     },
     //删除业主
-    deleteBtn(row) {},
+    async deleteBtn(row) {
+      console.log(row);
+      let confrim = await this.$myconfirm("确定删除该数据吗?");
+      if (confrim) {
+        let res = await deleteUserApi({
+          userId: row.userId,
+          houseId: row.houseId,
+        });
+        if (res && res.code == 200) {
+          //刷新列表
+          this.getList();
+          //信息提示
+          this.$message.success(res.msg);
+        }
+      }
+    },
     //退车位
     async leavePark(row) {
       console.log(row);

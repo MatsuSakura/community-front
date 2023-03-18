@@ -11,6 +11,10 @@ export async function getRoleListApi(){
 export async function getListApi(parm){
     return await http.get("/api/liveUser/list",parm)
 }
+//业主列表
+export async function getElderListApi(parm){
+    return await http.get("/api/liveUser/elderlist",parm)
+}
 //根据id查询用户
 export async function getUserByIdApi(parm){
     return await http.get("/api/liveUser/getUserById",parm)
@@ -42,4 +46,8 @@ export async function returnHouseApi(parm){
 //退车位
 export async function returnParkApi(parm){
     return await http.post("/api/liveUser/returnPark",parm)
+}
+//删除
+export async function deleteUserApi(parm){
+    return await http.delete("/api/liveUser",parm)
 }

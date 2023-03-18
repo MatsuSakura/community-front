@@ -5,7 +5,11 @@ export async function getListApi(parm){
 }
 //新增
 export async function addApi(parm){
-    return await http.post("/api/userComplaint",parm)
+    return await http.post("/api/userComplaint/add",parm)
+}
+//新增人文关怀
+export async function addHelpApi(parm){
+    return await http.post("/api/userComplaint/addHelp",parm)
 }
 //编辑
 export async function editApi(parm){
