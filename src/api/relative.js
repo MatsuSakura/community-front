@@ -3,7 +3,6 @@ import http from '@/utils/http'
 export async function addRelativeApi(parm){
     return await http.post("/api/relative",parm);
 }
-
 //获取
 export async function getRelativeListApi(){
     return await http.get("/api/relative/list",null);

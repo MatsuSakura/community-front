@@ -15,6 +15,13 @@ export async function getListApi(parm){
 export async function getElderListApi(parm){
     return await http.get("/api/liveUser/elderlist",parm)
 }
+//业主列表
+export async function getChildrenListApi(parm){
+    return await http.get("/api/liveUser/childrenlist",parm)
+}
+export async function getWorkerListApi(parm){
+    return await http.get("/api/liveUser/workerlist",parm)
+}
 //根据id查询用户
 export async function getUserByIdApi(parm){
     return await http.get("/api/liveUser/getUserById",parm)

@@ -31,6 +31,9 @@
           </template>
         </el-table-column>
         <el-table-column prop="relName" label="亲属名称"> </el-table-column>
+        <el-table-column prop="name" label="楼栋"></el-table-column>
+        <el-table-column prop="unitName" label="单元"></el-table-column>
+        <el-table-column prop="houseNum" label="房屋编号"></el-table-column>
         <el-table-column align="center" width="200" label="操作">
           <template slot-scope="scope">
             <el-button
@@ -112,7 +115,7 @@
                 size="small"
               ></el-input>
             </el-form-item>
-           
+          
             <el-form-item label="备注">
               <el-input
                 v-model="addModel.remark"
@@ -175,7 +178,7 @@
   </template>
   
   <script>
-  import { getRelativeListApi, addRelativeApi, getParentApi,editRelativeApi,deleteRelativeApi } from "@/api/relative";
+  import { getRelativeListApi, addRelativeApi, getParentApi,editRelativeApi,deleteRelativeApi,getListApi } from "@/api/relative";
   import SysDialog from "@/components/system/SysDialog";
   export default {
     //注册组件
@@ -223,6 +226,13 @@
               message: "请填写菜单名称",
             },
           ],
+          phone: [
+            {
+              required: true,
+              trigger: "change",
+              message: "请填写手机号",
+            },
+          ],
           relName: [
             {
               required: true,
@@ -238,6 +248,7 @@
           parentId: "",
           menuLabel: "",
           relName: "",
+          phone:"",
           type: "",
           icon: "",
           remark: "",
