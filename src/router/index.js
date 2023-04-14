@@ -54,41 +54,6 @@ export const constantRoutes = [
       meta: { title: '首页', icon: 'el-icon-info' }
     }]
   },
-
-  {
-    path: '/system',
-    component: Layout,
-    alwaysShow: true,
-    name: 'system',
-    meta: { title: '系统管理', icon: 'el-icon-setting' },
-    children: [
-      {
-        path: '/sysUserList',
-        name: 'sysUserList',
-        component: () => import('@/views/system/sysUserList'),
-        meta: { title: '员工管理', icon: 'user' }
-      },
-      {
-        path: '/sysRoleList',
-        name: 'sysRoleList',
-        component: () => import('@/views/system/sysRoleList'),
-        meta: { title: '角色管理', icon: 'user' }
-      },
-      {
-        path: '/sysMenuList',
-        name: 'sysMenuList',
-        component: () => import('@/views/system/sysMenuList'),
-        meta: { title: '权限管理', icon: 'el-icon-s-tools' }
-      }
-      ,
-      {
-        path: '/RelativeList',
-        name: 'RelativeList',
-        component: () => import('@/views/system/RelativeList'),
-        meta: { title: '亲属管理', icon: 'user' }
-      }
-    ]
-  },
   {
     path: '/house',
     component: Layout,
@@ -161,6 +126,12 @@ export const constantRoutes = [
         name: 'liveElder',
         component: () => import('@/views/live/liveElder'),
         meta: { title: '老年人列表', icon: 'el-icon-s-data' }
+      },
+      {
+        path: '/RelativeList',
+        name: 'RelativeList',
+        component: () => import('@/views/live/RelativeList'),
+        meta: { title: '亲属管理', icon: 'user' }
       }
     ]
   },
@@ -233,6 +204,34 @@ export const constantRoutes = [
       }
     ]
   },
+
+  {
+    path: '/system',
+    component: Layout,
+    alwaysShow: true,
+    name: 'system',
+    meta: { title: '系统管理', icon: 'el-icon-setting' },
+    children: [
+      {
+        path: '/sysUserList',
+        name: 'sysUserList',
+        component: () => import('@/views/system/sysUserList'),
+        meta: { title: '成员管理', icon: 'user' }
+      },
+      {
+        path: '/sysRoleList',
+        name: 'sysRoleList',
+        component: () => import('@/views/system/sysRoleList'),
+        meta: { title: '角色管理', icon: 'user' }
+      },
+      {
+        path: '/sysMenuList',
+        name: 'sysMenuList',
+        component: () => import('@/views/system/sysMenuList'),
+        meta: { title: '权限管理', icon: 'el-icon-s-tools' }
+      }
+    ]
+  },
   {
     path: '/notice',
     component: Layout,
@@ -248,7 +247,6 @@ export const constantRoutes = [
       }
     ]
   },
-  
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }

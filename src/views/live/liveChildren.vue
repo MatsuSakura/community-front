@@ -29,6 +29,7 @@
             <el-tag type="danger" size="normal" v-if="scope.row.sex == '1'">女</el-tag>
           </template>
         </el-table-column>
+        <el-table-column prop="birthday" label="出生年月"></el-table-column>
         <el-table-column prop="phone" label="家长电话"></el-table-column>
         <el-table-column prop="school" label="就读学校"></el-table-column>
         <el-table-column prop="healthProblem" label="身体情况"></el-table-column>
@@ -85,6 +86,16 @@
                 <el-radio :label="'0'">男</el-radio>
                 <el-radio :label="'1'">女</el-radio>
               </el-radio-group>
+            </el-form-item>
+            <el-form-item prop="birthday" label="出生年月">
+              <el-date-picker
+                format="yyyy-MM-DD"
+                value-format="yyyy-MM-DD"
+                v-model="addModel.birthday"
+                type="date"
+                placeholder="选择月份"
+              >
+              </el-date-picker>
             </el-form-item>
             <el-form-item prop="phone" label="家长电话">
             <el-input v-model="addModel.phone"></el-input>
@@ -282,6 +293,7 @@
         roleList: [],
         //表单绑定数据源
         addModel: {
+          birthday:"",
           editType: "",
           userId: "",
           userName: "",
@@ -302,6 +314,13 @@
             trigger: "change",
             required: true,
             message: "请填写登录名",
+          },
+        ],
+        birthday: [
+          {
+            trigger: "change",
+            required: true,
+            message: "请填写出生年月",
           },
         ],
         password: [

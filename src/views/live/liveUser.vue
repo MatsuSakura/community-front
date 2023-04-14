@@ -29,13 +29,14 @@
           <el-tag type="danger" size="normal" v-if="scope.row.sex == '1'">女</el-tag>
         </template>
       </el-table-column>
+      <el-table-column prop="birthday" label="出生年月"></el-table-column>
       <el-table-column prop="phone" label="电话"></el-table-column>
       <el-table-column prop="name" label="楼栋"></el-table-column>
       <el-table-column prop="unitName" label="单元"></el-table-column>
       <el-table-column prop="houseNum" label="房屋编号"></el-table-column>
       <el-table-column prop="houseArea" label="使用面积"></el-table-column>
       <el-table-column prop="parkName" label="车位"></el-table-column>
-      <el-table-column align="center" width="480" label="操作">
+      <el-table-column align="center" width="500" label="操作">
         <template slot-scope="scope">
           <el-button type="success" size="small" @click="editBtn(scope.row)"
             >编辑</el-button
@@ -47,7 +48,7 @@
             >分配车位</el-button
           >
           <el-button type="danger" size="small" @click="leaveHose(scope.row)"
-            >退房</el-button
+            >收回房屋</el-button
           >
           <el-button type="warning" size="small" @click="leavePark(scope.row)"
             >退车位</el-button
@@ -98,6 +99,16 @@
               <el-radio :label="'1'">女</el-radio>
             </el-radio-group>
           </el-form-item>
+          <el-form-item prop="birthday" label="出生年月">
+              <el-date-picker
+                format="yyyy-MM-DD"
+                value-format="yyyy-MM-DD"
+                v-model="addModel.birthday"
+                type="date"
+                placeholder="选择月份"
+              >
+              </el-date-picker>
+            </el-form-item>
           <el-form-item prop="phone" label="电话">
             <el-input v-model="addModel.phone"></el-input>
           </el-form-item>
@@ -391,6 +402,7 @@ export default {
       roleList: [],
       //表单绑定数据源
       addModel: {
+        birthday:"",
         editType: "",
         userId: "",
         userName: "",
@@ -408,6 +420,13 @@ export default {
             trigger: "change",
             required: true,
             message: "请填写姓名",
+          },
+        ],
+        birthday: [
+          {
+            trigger: "change",
+            required: true,
+            message: "请填写出生年月",
           },
         ],
         phone: [

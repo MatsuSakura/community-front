@@ -139,8 +139,8 @@
             </el-form-item>
             <el-form-item prop="status" label="使用状态" size="normal">
               <el-radio-group v-model="addModel.status">
-                <el-radio :label="'0'">未使用</el-radio>
-                <el-radio :label="'1'">已使用</el-radio>
+                <el-radio :disabled ="addModel.editType == 1"  :label="'0'">未使用</el-radio>
+                <el-radio :disabled ="addModel.editType == 1"  :label="'1'">已使用</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-form>
