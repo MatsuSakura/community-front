@@ -9,7 +9,7 @@
         size="small"
       >
         <el-form-item label="姓名">
-          <el-input v-model="parms.userName"></el-input>
+          <el-input v-model="parms.loginName"></el-input>
         </el-form-item>
         <el-form-item label="房屋编号">
           <el-input v-model="parms.houseNum"></el-input>
@@ -21,7 +21,7 @@
         </el-form-item>
       </el-form>
       <el-table :height="tableHeight" :data="powerList" border stripe>
-        <el-table-column prop="userName" label="姓名"></el-table-column>
+        <el-table-column prop="loginName" label="姓名"></el-table-column>
         <el-table-column prop="phone" label="电话"></el-table-column>
         <el-table-column prop="name" label="栋数"></el-table-column>
         <el-table-column prop="unitName" label="单元"></el-table-column>
@@ -233,7 +233,7 @@
         },
         //搜索参数
         parms: {
-          userName: "",
+          loginName: "",
           houseNum: "",
           currentPage: 1,
           pageSize: 10,
@@ -274,7 +274,7 @@
       },
       //重置按钮
       resetBtn(){
-        this.parms.userName = '';
+        this.parms.loginName = '';
         this.parms.houseNum = '';
         this.getList();
       },

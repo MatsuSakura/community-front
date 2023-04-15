@@ -9,7 +9,7 @@
       size="small"
     >
       <el-form-item label="姓名">
-        <el-input v-model="parms.userName"></el-input>
+        <el-input v-model="parms.loginName"></el-input>
       </el-form-item>
       <el-form-item label="电话">
         <el-input v-model="parms.phone"></el-input>
@@ -22,7 +22,7 @@
     </el-form>
     <!-- 表格 -->
     <el-table :height="tableHeight" :data="tableList" border stripe>
-      <el-table-column prop="userName" label="姓名"></el-table-column>
+      <el-table-column prop="loginName" label="姓名"></el-table-column>
       <el-table-column prop="sex" label="性别">
         <template slot-scope="scope">
           <el-tag type="success" size="normal" v-if="scope.row.sex == '0'">男</el-tag>
@@ -90,8 +90,8 @@
           :inline="true"
           size="small"
         >
-          <el-form-item prop="userName" label="姓名">
-            <el-input v-model="addModel.userName"></el-input>
+          <el-form-item prop="loginName" label="姓名">
+            <el-input v-model="addModel.loginName"></el-input>
           </el-form-item>
           <el-form-item prop="sex" label="性别">
             <el-radio-group v-model="addModel.sex">
@@ -123,8 +123,8 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item prop="loginName" label="账户">
-            <el-input v-model="addModel.loginName"></el-input>
+          <el-form-item prop="username" label="账户">
+            <el-input v-model="addModel.username"></el-input>
           </el-form-item>
           <el-form-item v-if="addModel.editType != '1'" prop="password" label="密码">
             <el-input v-model="addModel.password"></el-input>
@@ -415,7 +415,7 @@ export default {
       },
       //表单验证规则
       rules: {
-        userName: [
+        loginName: [
           {
             trigger: "change",
             required: true,
@@ -443,7 +443,7 @@ export default {
             message: "请选择性别",
           },
         ],
-        loginName: [
+        username: [
           {
             trigger: "change",
             required: true,
@@ -481,7 +481,7 @@ export default {
       },
       //参数
       parms: {
-        userName: "",
+        loginName: "",
         phone: "",
         currentPage: 1,
         pageSize: 8,
@@ -503,7 +503,7 @@ export default {
   methods: {
     //重置按钮
     resetBtn() {
-      this.parms.userName = "";
+      this.parms.loginName = "";
       this.parms.phone = "";
       this.getList();
     },

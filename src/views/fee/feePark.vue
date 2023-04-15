@@ -9,7 +9,7 @@
         size="small"
       >
         <el-form-item label="姓名">
-          <el-input v-model="parms.userName"></el-input>
+          <el-input v-model="parms.loginName"></el-input>
         </el-form-item>
         <el-form-item label="车位名称">
           <el-input v-model="parms.parkName"></el-input>
@@ -24,7 +24,7 @@
       </el-form>
       <!-- 表格 -->
       <el-table :height="tableHeight" :data="tableList" border stripe>
-        <el-table-column label="姓名" prop="userName"></el-table-column>
+        <el-table-column label="姓名" prop="loginName"></el-table-column>
         <el-table-column label="电话" prop="phone"></el-table-column>
         <el-table-column label="车位" prop="parkName"></el-table-column>
         <el-table-column label="车位类型" prop="parkType">
@@ -206,7 +206,7 @@
         parms: {
           currentPage: 1,
           pageSize: 10,
-          userName: "",
+          loginName: "",
           parkName: "",
           total: 0,
         },
@@ -313,7 +313,7 @@
       },
       //重置按钮
       resetBtn() {
-        this.parms.userName = "";
+        this.parms.loginName = "";
         this.parms.parkName = "";
         this.getList();
       },

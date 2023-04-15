@@ -9,7 +9,7 @@
         size="small"
       >
         <el-form-item label="姓名">
-          <el-input v-model="parms.userName"></el-input>
+          <el-input v-model="parms.loginName"></el-input>
         </el-form-item>
         <el-form-item label="房屋编号">
           <el-input v-model="parms.houseNum"></el-input>
@@ -24,7 +24,7 @@
       </el-form>
       <!-- 表格 -->
       <el-table :height="tableHeight" :data="tableList" border stripe>
-        <el-table-column label="姓名" prop="userName"></el-table-column>
+        <el-table-column label="姓名" prop="loginName"></el-table-column>
         <el-table-column label="电话" prop="phone"></el-table-column>
         <el-table-column label="楼栋" prop="name"></el-table-column>
         <el-table-column label="单元" prop="unitName"></el-table-column>
@@ -263,7 +263,7 @@
           total: 0,
           currentPage: 1,
           pageSize: 10,
-          userName: "",
+          loginName: "",
           houseNum: "",
         },
       };
@@ -411,7 +411,7 @@
       //重置按钮
       resetBtn() {
         //把搜索框的数据清空
-        this.parms.userName = '';
+        this.parms.loginName = '';
         this.parms.houseNum = '';
         this.getList();
       },
