@@ -405,7 +405,7 @@ export default {
         birthday:"",
         editType: "",
         userId: "",
-        userName: "",
+        username: "",
         phone: "",
         sex: "",
         loginName: "",
@@ -441,13 +441,6 @@ export default {
             trigger: "change",
             required: true,
             message: "请选择性别",
-          },
-        ],
-        username: [
-          {
-            trigger: "change",
-            required: true,
-            message: "请填写登录名",
           },
         ],
         password: [

@@ -117,7 +117,7 @@
           </el-form-item>
           <el-form-item
             prop="path"
-            v-if="addModel.type == '1'"
+            v-if="addModel.type != '2'"
             label="路由地址"
           >
             <el-input

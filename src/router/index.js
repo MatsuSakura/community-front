@@ -194,13 +194,13 @@ export const constantRoutes = [
         path: '/repairList',
         name: 'repairList',
         component: () => import('@/views/repair/repairList'),
-        meta: { title: '维修列表', icon: 'el-icon-s-marketing' }
+        meta: { title: '维修列表', icon: 'el-icon-edit-outline' }
       },
       {
         path: '/myRepair',
         name: 'myRepair',
         component: () => import('@/views/repair/myRepair'),
-        meta: { title: '我的维修', icon: 'el-icon-picture-outline' }
+        meta: { title: '我的维修', icon: 'el-icon-menu' }
       }
     ]
   },

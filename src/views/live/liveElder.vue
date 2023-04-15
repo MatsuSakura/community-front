@@ -314,7 +314,7 @@
           birthday:"",
           editType: "",
           userId: "",
-          userName: "",
+          username: "",
           phone: "",
           sex: "",
           status: "",
