@@ -33,11 +33,9 @@ export async function getInfo() {
   return await http.get("/api/user/getInfo",parm)
 }
 
-export function logout() {
-  return request({
-    url: '/vue-admin-template/user/logout',
-    method: 'post'
-  })
+//退出登录
+export async function loginOutApi(){
+  return await http.post("/api/user/loginOut",null)
 }
 
 //根据用户id查询角色id
@@ -47,4 +45,7 @@ export async function getRoleByUserIdApi(parm){
 //分配角色保存
 export async function assignSaveApi(parm){
   return await http.post("/api/user/saveRole",parm)
+}
+export async function getMenuList(){
+  return await http.get("/api/user/getMenuList")
 }

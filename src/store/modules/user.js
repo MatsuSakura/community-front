@@ -1,12 +1,13 @@
-import { login, logout, getInfo } from '@/api/user'
-import { getToken, setToken, removeToken,setUserId} from '@/utils/auth'
+import { login, loginOutApi, getInfo } from '@/api/user'
+import { getToken, setToken, removeToken,setUserId,removeUserId,clearSession} from '@/utils/auth'
 import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
   return {
     token: getToken(),
     name: '',
-    avatar: ''
+    avatar: '',
+    roles: [],
   }
 }
 
@@ -24,6 +25,9 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
+  },
+  SET_ROLES: (state, roles) => {
+    state.roles = roles
   }
 }
 
@@ -47,35 +51,44 @@ login({ commit }, userInfo) {
   })
 },
 
-  // 获取用户信息
-  getInfo({ commit, state }) {
-    return new Promise((resolve, reject) => {
-      //调用api中的getInfo
-      getInfo(state.token).then(response => {
-        const { data } = response
+getInfo({ commit, state }) {
+  return new Promise((resolve, reject) => {
+    //调用api/user.js里面的getInfo
+    getInfo(state.token).then(response => {
+      const { data } = response
 
-        if (!data) {
-          return reject('Verification failed, please Login again.')
-        }
+      if (!data) {
+        return reject('获取用户信息失败，请重新登录!')
+      }
 
-        const { name, avatar } = data
-
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
-        resolve(data)
-      }).catch(error => {
-        reject(error)
-      })
+      const { name, avatar,roles } = data
+      if (!roles || roles.length <= 0) {
+        reject('getInfo: 用户的权限信息必须是一个数组!')
+      }
+      //把权限字段放到sessionStorage里面
+      sessionStorage.setItem('codeList',JSON.stringify(roles))
+      //把roles存到store里面
+      commit('SET_ROLES', roles)
+      commit('SET_NAME', name)
+      commit('SET_AVATAR', avatar)
+      resolve(data)
+    }).catch(error => {
+      reject(error)
     })
-  },
+  })
+},
 
   // user logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
+      loginOutApi(state.token).then(() => {
         removeToken() // must remove  token  first
+        removeUserId();
+        clearSession();
         resetRouter()
         commit('RESET_STATE')
+        console.log('退出登录')
+        // dispatch('tagsView/delAllViews',{}, {root: true})
         resolve()
       }).catch(error => {
         reject(error)
