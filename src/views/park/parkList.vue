@@ -38,7 +38,7 @@
           <el-button style="color: #ff7670" icon="el-icon-delete" @click="resetBtn"
             >重置</el-button
           >
-          <el-button icon="el-icon-plus" type="primary" @click="addBtn">新增</el-button>
+          <el-button v-if="hasPerm('sys:parkList:add')" icon="el-icon-plus" type="primary" @click="addBtn">新增</el-button>
         </el-form-item>
       </el-form>
       <!-- 表格列表 -->
@@ -67,10 +67,10 @@
         <el-table-column prop="parkNum" label="序号"></el-table-column>
         <el-table-column width="180" align="center" label="操作">
           <template slot-scope="scope">
-            <el-button icon="el-icon-edit" type="primary" size="small" @click="editBtn(scope.row)"
+            <el-button v-if="hasPerm('sys:parkList:edit')" icon="el-icon-edit" type="primary" size="small" @click="editBtn(scope.row)"
               >编辑</el-button
             >
-            <el-button icon="el-icon-delete" type="danger" size="small" @click="deleteBtn(scope.row)"
+            <el-button v-if="hasPerm('sys:parkList:delete')" icon="el-icon-delete" type="danger" size="small" @click="deleteBtn(scope.row)"
               >删除</el-button
             >
           </template>

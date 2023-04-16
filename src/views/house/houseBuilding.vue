@@ -26,7 +26,7 @@
           <el-button icon="el-icon-search" @click="searchBtn">查询</el-button>
           <el-button icon="el-icon-delete" @click="cancelBtn" style="color: #ff7670" >重置</el-button
           >
-          <el-button icon="el-icon-plus" type="primary" @click="addBtn">新增</el-button>
+          <el-button v-if="hasPerm('sys:houseBuilding:add')" icon="el-icon-plus" type="primary" @click="addBtn">新增</el-button>
         </el-form-item>
       </el-form>
       <!-- 表格列表 -->
@@ -43,6 +43,7 @@
         <el-table-column width="180" label="操作">
           <template slot-scope="scope">
             <el-button
+            v-if="hasPerm('sys:houseBuilding:edit')"
               icon="el-icon-edit"
               type="primary"
               @click="editBtn(scope.row)"
@@ -50,6 +51,7 @@
               >编辑</el-button
             >
             <el-button
+            v-if="hasPerm('sys:houseBuilding:delete')"
               icon="el-icon-delete"
               type="danger"
               @click="deleteBtn(scope.row)"

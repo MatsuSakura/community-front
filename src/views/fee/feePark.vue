@@ -19,7 +19,7 @@
           <el-button style="color: #ff7670" @click="resetBtn" icon="el-icon-delete"
             >重置</el-button
           >
-          <el-button icon="el-icon-plus" @click="addBtn" type="primary">新增</el-button>
+          <el-button v-if="hasPerm('sys:feePark:add')" icon="el-icon-plus" @click="addBtn" type="primary">新增</el-button>
         </el-form-item>
       </el-form>
       <!-- 表格 -->
@@ -52,6 +52,7 @@
         <el-table-column width="270" align="center" label="操作">
           <template slot-scope="scope">
             <el-button
+            v-if="hasPerm('sys:feePark:edit')"
               icon="el-icon-edit"
               type="primary"
               size="small"
@@ -59,6 +60,7 @@
               >编辑</el-button
             >
             <el-button
+            v-if="hasPerm('sys:feePark:delete')"
               icon="el-icon-delete"
               type="danger"
               size="small"
@@ -66,7 +68,7 @@
               >删除</el-button
             >
             <el-button
-              v-if="scope.row.payParkStatus == '0'"
+              v-if="scope.row.payParkStatus == '0'&& hasPerm('sys:feePark:pay')"
               icon="el-icon-delete"
               type="warning"
               size="small"

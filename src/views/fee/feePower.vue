@@ -17,7 +17,7 @@
         <el-form-item>
           <el-button icon="el-icon-search" @click="searchBtn">查询</el-button>
           <el-button style="color: #ff7670" @click="resetBtn" icon="el-icon-delete">重置</el-button>
-          <el-button @click="addBtn" type="primary" icon="el-icon-plus">新增</el-button>
+          <el-button v-if="hasPerm('sys:feePower:add')" @click="addBtn" type="primary" icon="el-icon-plus">新增</el-button>
         </el-form-item>
       </el-form>
       <el-table :height="tableHeight" :data="powerList" border stripe>
@@ -40,13 +40,13 @@
         </el-table-column>
         <el-table-column width="270" align="center" label="操作">
           <template slot-scope="scope">
-            <el-button icon="el-icon-edit" type="primary" size="small" @click="editBtn(scope.row)"
+            <el-button v-if="hasPerm('sys:feePower:edit')" icon="el-icon-edit" type="primary" size="small" @click="editBtn(scope.row)"
               >编辑</el-button
             >
-             <el-button icon="el-icon-delete" type="danger" size="small" @click="deleteBtn(scope.row)"
+             <el-button v-if="hasPerm('sys:feePower:delete')" icon="el-icon-delete" type="danger" size="small" @click="deleteBtn(scope.row)"
               >删除</el-button
             >
-             <el-button v-if="scope.row.payPowerStatus == '0'" icon="el-icon-delete" type="warning" size="small" @click="payBtn(scope.row)"
+             <el-button v-if="scope.row.payPowerStatus == '0' && hasPerm('sys:feePower:pay')" icon="el-icon-delete" type="warning" size="small" @click="payBtn(scope.row)"
               >缴费</el-button
             >
           </template>

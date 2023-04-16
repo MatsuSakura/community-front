@@ -17,7 +17,7 @@
         <el-form-item>
           <el-button @click="searchBtn" icon="el-icon-search">查询</el-button>
           <el-button @click="resetBtn" style="color:#FF7670;" icon="el-icon-delete">重置</el-button>
-          <el-button @click="addUser" type="primary" icon="el-icon-plus">新增</el-button>
+          <el-button v-if="hasPerm('sys:sysUserList:add')" @click="addUser" type="primary" icon="el-icon-plus">新增</el-button>
         </el-form-item>
       </el-form>
       <!-- 员工表格 -->
@@ -59,6 +59,7 @@
         <el-table-column align="center" width="290" label="操作">
         <template slot-scope="scope">
           <el-button
+          v-if="hasPerm('sys:sysUserList:edit')"
             icon="el-icon-edit"
             type="primary"
             size="small"
@@ -66,6 +67,7 @@
             >编辑</el-button
           >
           <el-button
+          v-if="hasPerm('sys:sysUserList:assignRole')"
             type="success"
             icon="el-icon-edit"
             size="small"
@@ -73,6 +75,7 @@
             >分配角色</el-button
           >
           <el-button
+          v-if="hasPerm('sys:sysUserList:delete')"
             icon="el-icon-delete"
             type="danger"
             size="small"
@@ -94,7 +97,7 @@
         @size-change="sizeChange"
         @current-change="currentChange"
         :current-page.sync="parms.currentPage"
-        :page-sizes="[5,10,15,20]"
+        :page-sizes="[8,10,15,20]"
         :page-size="parms.pageSize"
         layout="total,sizes,prev,pager,next,jumper"
         :total="parms.total"
@@ -299,7 +302,7 @@
         parms: {
           phone: "",
           loginName: "",
-          pageSize: 5,
+          pageSize: 8,
           currentPage: 1,
           total: 0,
         },
@@ -336,7 +339,7 @@
       this.radio = ''
       this.assignParm.userId = row.userId;
       //设置弹框属性
-      this.roleDialog.title = '为【'+row.userName+'】分配角色';
+      this.roleDialog.title = '为【'+row.loginName+'】分配角色';
       this.roleDialog.visible = true;
       //查询角色列表
       await this.getRoleList();

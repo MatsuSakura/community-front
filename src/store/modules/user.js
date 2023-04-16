@@ -101,6 +101,9 @@ getInfo({ commit, state }) {
     return new Promise(resolve => {
       removeToken() // must remove  token  first
       commit('RESET_STATE')
+      removeUserId();
+      clearSession();
+      
       resolve()
     })
   }

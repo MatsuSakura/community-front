@@ -17,7 +17,7 @@ export async function editUserApi(parm){
 }
 //删除员工
 export async function deleteUserApi(parm){
-  return await http.delete(parm)
+  return await http.delete("/api/user",parm)
 }
 
 //员工登录
@@ -48,4 +48,8 @@ export async function assignSaveApi(parm){
 }
 export async function getMenuList(){
   return await http.get("/api/user/getMenuList")
+}
+//修改密码
+export async function resetPasswordApi(parm){
+  return await http.post("/api/user/resetPassword",parm)
 }

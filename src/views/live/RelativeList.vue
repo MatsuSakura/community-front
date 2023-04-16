@@ -3,7 +3,7 @@
       <!-- 新增按钮 -->
       <el-form size="small">
         <el-form-item>
-          <el-button type="primary" icon="el-icon-plus" @click="addRelative"
+          <el-button v-if="hasPerm('sys:RelativeList:add')" type="primary" icon="el-icon-plus" @click="addRelative"
             >新增</el-button
           >
         </el-form-item>
@@ -37,12 +37,14 @@
         <el-table-column align="center" width="200" label="操作">
           <template slot-scope="scope">
             <el-button
+            v-if="hasPerm('sys:RelativeList:edit')"
               type="primary"
               icon="el-icon-edit"
               size="small"
               @click="editRelative(scope.row)"
             >编辑</el-button>
             <el-button
+            v-if="hasPerm('sys:RelativeList:delete')"
               type="danger"
               icon="el-icon-delete"
               size="small"

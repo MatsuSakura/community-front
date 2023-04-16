@@ -19,7 +19,7 @@
           <el-button style="color: #ff7670" icon="el-icon-delete" @click="resetBtn"
             >重置</el-button
           >
-          <el-button type="primary" icon="el-icon-plus" @click="addBtn">新增</el-button>
+          <el-button v-if="hasPerm('sys:feeWater:add')" type="primary" icon="el-icon-plus" @click="addBtn">新增</el-button>
         </el-form-item>
       </el-form>
       <!-- 表格 -->
@@ -45,6 +45,7 @@
         <el-table-column width="270" align="center" label="操作">
           <template slot-scope="scope">
             <el-button
+            v-if="hasPerm('sys:feeWater:edit')"
               icon="el-icon-edit"
               type="primary"
               size="small"
@@ -52,6 +53,7 @@
               >编辑</el-button
             >
             <el-button
+            v-if="hasPerm('sys:feeWater:delete')"
               icon="el-icon-delete"
               type="danger"
               size="small"
@@ -59,7 +61,7 @@
               >删除</el-button
             >
             <el-button
-              v-if="scope.row.payWaterStatus == '0'"
+              v-if="scope.row.payWaterStatus == '0' && hasPerm('sys:feeWater:pay')"
               icon="el-icon-delete"
               type="warning"
               size="small"

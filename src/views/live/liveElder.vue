@@ -17,7 +17,7 @@
         <el-form-item>
           <el-button icon="el-icon-search" @click="searchBtn">查询</el-button>
           <el-button style="color: #ff7670" icon="el-icon-delete" @click="resetBtn">重置</el-button>
-          <el-button icon="el-icon-plus" type="primary" @click="addBtn">新增</el-button>
+          <el-button v-if="hasPerm('sys:liveUser:add')" icon="el-icon-plus" type="primary" @click="addBtn">新增</el-button>
         </el-form-item>
       </el-form>
       <!-- 表格 -->
@@ -44,19 +44,19 @@
         </el-table-column>
         <el-table-column align="center" width="500" label="操作">
           <template slot-scope="scope">
-            <el-button type="success" size="small" @click="editBtn(scope.row)"
+            <el-button v-if="hasPerm('sys:liveUser:edit')" type="success" size="small" @click="editBtn(scope.row)"
               >编辑</el-button
             >
-            <el-button type="primary" size="small" @click="assignHose(scope.row)"
+            <el-button v-if="hasPerm('sys:liveUser:assignHouse')" type="primary" size="small" @click="assignHose(scope.row)"
               >分配房屋</el-button
             >
-            <el-button  size="small" @click="assignHelp(scope.row)"
+            <!-- <el-button  size="small" @click="assignHelp(scope.row)"
               >人文关怀</el-button
+            > -->
+            <el-button v-if="hasPerm('sys:liveUser:leaveHouse')" type="danger" size="small" @click="leaveHose(scope.row)"
+              >收回房屋</el-button
             >
-            <el-button type="danger" size="small" @click="leaveHose(scope.row)"
-              >退房</el-button
-            >
-            <el-button type="danger" size="small" @click="deleteBtn(scope.row)"
+            <el-button v-if="hasPerm('sys:liveUser:delete')" type="danger" size="small" @click="deleteBtn(scope.row)"
               >删除</el-button
             >
           </template>

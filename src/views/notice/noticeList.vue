@@ -16,7 +16,7 @@
           <el-button style="color: #ff7670" @click="resetBtn" icon="el-icon-delete"
             >重置</el-button
           >
-          <el-button icon="el-icon-plus" type="primary" @click="addBtn">新增</el-button>
+          <el-button v-if="hasPerm('sys:noticeList:add')" icon="el-icon-plus" type="primary" @click="addBtn">新增</el-button>
         </el-form-item>
       </el-form>
       <!-- 表格 -->
@@ -27,6 +27,7 @@
         <el-table-column align="center" width="180" label="操作">
           <template slot-scope="scope">
             <el-button
+            v-if="hasPerm('sys:noticeList:edit')"
               type="primary"
               icon="el-icon-edit"
               size="small"
@@ -34,6 +35,7 @@
               >编辑</el-button
             >
             <el-button
+            v-if="hasPerm('sys:noticeList:delete')"
               type="danger"
               icon="el-icon-delete"
               size="small"

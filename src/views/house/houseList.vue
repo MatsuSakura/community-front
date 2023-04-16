@@ -33,7 +33,7 @@
           <el-button icon="el-icon-delete" style="color: #ff7670"  @click="resetBtn"
             >重置</el-button
           >
-          <el-button icon="el-icon-plus" type="primary" @click="addBtn">新增</el-button>
+          <el-button v-if="hasPerm('sys:houseList:add')" icon="el-icon-plus" type="primary" @click="addBtn">新增</el-button>
         </el-form-item>
       </el-form>
       <!-- 表格 -->
@@ -55,6 +55,7 @@
         <el-table-column align="center" width="180" label="操作">
           <template slot-scope="scope">
             <el-button
+            v-if="hasPerm('sys:houseList:add')"
               icon="el-icon-edit"
               type="primary"
               size="small"
@@ -62,6 +63,7 @@
               >编辑</el-button
             >
             <el-button
+            v-if="hasPerm('sys:houseList:add')"
               icon="el-icon-delete"
               type="danger"
               size="small"
