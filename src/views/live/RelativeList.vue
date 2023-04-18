@@ -16,11 +16,11 @@
         border
         stripe
       >
-        <el-table-column prop="menuLabel" label="业主名称"></el-table-column>
+        <el-table-column prop="menuLabel" label="用户名称"></el-table-column>
         <el-table-column prop="type" label="亲属类型">
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.type == '0'">业主</el-tag>
-            <el-tag type="success" v-if="scope.row.type == '1'">学童</el-tag>
+            <el-tag v-if="scope.row.type == '0'">用户</el-tag>
+            <el-tag type="success" v-if="scope.row.type == '1'">孩童</el-tag>
             <el-tag  v-if="scope.row.type == '2'">中青年</el-tag>
             <el-tag type="danger" v-if="scope.row.type == '3'">老年人</el-tag>
           </template>
@@ -77,7 +77,7 @@
               <el-col :span="24">
                 <el-form-item prop="type" label="亲属类型">
                   <el-radio-group v-model="addModel.type">
-                    <el-radio :label="'0'">业主</el-radio>
+                    <el-radio :label="'0'">用户</el-radio>
                     <el-radio :label="'1'">学童</el-radio>
                     <el-radio :label="'2'">中青年</el-radio>
                     <el-radio :label="'3'">老年人</el-radio>

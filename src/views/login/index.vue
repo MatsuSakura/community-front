@@ -32,8 +32,8 @@
       </el-form-item>
       <el-form-item prop="userType">
         <el-radio-group v-model="loginForm.userType">
-          <el-radio :label="0">业主</el-radio>
-          <el-radio :label="1">物业</el-radio>
+          <el-radio :label="0">用户</el-radio>
+          <el-radio :label="1">管理员</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label>

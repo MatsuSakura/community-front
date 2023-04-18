@@ -601,7 +601,7 @@ export default {
       //设置编辑属性
       this.addModel.editType = "1";
       //设置弹框属性
-      this.addDialog.title = "编辑业主";
+      this.addDialog.title = "编辑用户";
       this.addDialog.visible = true;
       console.log(this.addModel);
     },
@@ -780,7 +780,7 @@ export default {
         this.tableList = res.data.records;
         this.parms.total = res.data.total;
       }
-      console.log("业主列表");
+      console.log("用户列表");
       console.log(res);
     },
     //新增按钮
@@ -790,7 +790,7 @@ export default {
       //设置编辑属性
       this.addModel.editType = "0";
       //设置弹框属性
-      this.addDialog.title = "新增业主";
+      this.addDialog.title = "新增用户";
       this.addDialog.visible = true;
     },
   },

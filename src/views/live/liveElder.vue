@@ -50,9 +50,9 @@
             <el-button v-if="hasPerm('sys:liveUser:assignHouse')" type="primary" size="small" @click="assignHose(scope.row)"
               >分配房屋</el-button
             >
-            <!-- <el-button  size="small" @click="assignHelp(scope.row)"
+            <el-button  size="small" @click="assignHelp(scope.row)"
               >人文关怀</el-button
-            > -->
+            >
             <el-button v-if="hasPerm('sys:liveUser:leaveHouse')" type="danger" size="small" @click="leaveHose(scope.row)"
               >收回房屋</el-button
             >
@@ -305,7 +305,7 @@
         },
         //表格的高度
         tableHeight: 0,
-        //业主列表
+        //用户列表
         tableList: [],
         //角色列表
         roleList: [],
@@ -481,7 +481,7 @@
           this.$message.success(res.msg);
         }
       },
-      //编辑业主
+      //编辑用户
       async editBtn(row) {
         //清空表单
         this.$resetForm("addForm", this.addModel);
@@ -502,7 +502,7 @@
         this.addDialog.visible = true;
         console.log(this.addModel);
       },
-      //删除业主
+      //删除用户
     async deleteBtn(row) {
       console.log(row);
       let confrim = await this.$myconfirm("确定删除该数据吗?");
@@ -612,7 +612,7 @@
           }
         });
       },
-      //获取业主列表
+      //获取用户列表
       async getList() {
         let res = await getElderListApi(this.parms);
         if (res && res.code == 200) {
@@ -621,7 +621,7 @@
           this.parms.total = res.data.total;
           this.addModel.roleId="8";
         }
-        console.log("业主列表");
+        console.log("用户列表");
         console.log(res);
       },
       //新增按钮
@@ -631,7 +631,7 @@
         //设置编辑属性
         this.addModel.editType = "0";
         //设置弹框属性
-        this.addDialog.title = "新增业主";
+        this.addDialog.title = "新增用户";
         this.addDialog.visible = true;
       },
     },

@@ -11,6 +11,17 @@
         <el-form-item label="报修内容">
           <el-input v-model="parms.repairContent"></el-input>
         </el-form-item>
+        <el-form-item label="处理状态">
+          <el-select v-model="parms.status" placeholder="请选择">
+          <el-option
+          v-for="item in options"
+          label-width="90px"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+          </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item>
           <el-button icon="el-icon-search" @click="searchBtn">查询</el-button>
           <el-button style="color: #ff7670" @click="resetBtn" icon="el-icon-delete"
@@ -27,13 +38,20 @@
         <el-table-column label="处理状态" prop="status">
           <template slot-scope="scope">
             <el-tag v-if="scope.row.status == '1'" type="success" size="small"
-              >已处理</el-tag
+              >
+              已处理
+              <el-table-column label="维修小结" prop="remark"></el-table-column>
+              </el-tag
             >
             <el-tag v-if="scope.row.status == '0'" type="danger" size="small"
               >未处理</el-tag
             >
           </template>
         </el-table-column>
+        <el-table-column label="报修时间" prop="commitTime"></el-table-column>
+        
+          
+        
         <el-table-column align="center" width="280" label="操作">
           <template slot-scope="scope">
             <el-button
@@ -110,6 +128,14 @@
     },
     data() {
       return {
+        options: [{
+          value: '0',
+          label: '未处理'
+        }, {
+          value: '1',
+          label: '已处理'
+        },
+      ],
         //表单验证规则
         rules: {
           repairContent: [
@@ -142,6 +168,7 @@
           phone: "",
           repairAddress: "",
           repairContent: "",
+          status:""
         },
         //弹框属性定义
         addDialog: {
@@ -160,6 +187,8 @@
           pageSize: 10,
           userId: "",
           repairContent: "",
+          remark:"",
+          status:""
         },
       };
     },
@@ -246,6 +275,7 @@
       //重置按钮
       resetBtn() {
         this.parms.repairContent = "";
+        this.parms.status = "";
         this.getMyList();
       },
       //搜索按钮

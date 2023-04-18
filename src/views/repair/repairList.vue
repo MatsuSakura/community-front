@@ -4,13 +4,25 @@
       <el-form
         :model="parms"
         ref="searchParm"
-        label-width="80px"
+        label-width="90px"
         :inline="true"
         size="small"
       >
         <el-form-item label="报修内容">
           <el-input v-model="parms.repairContent"></el-input>
         </el-form-item>
+        <el-form-item label="处理状态">
+          <el-select v-model="parms.status" placeholder="请选择">
+        <el-option
+        v-for="item in options"
+        label-width="90px"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value">
+        </el-option>
+        </el-select>
+        </el-form-item>
+      
         <el-form-item>
           <el-button icon="el-icon-search" @click="searchBtn">查询</el-button>
           <el-button style="color: #ff7670" @click="resetBtn" icon="el-icon-delete"
@@ -33,6 +45,8 @@
             >
           </template>
         </el-table-column>
+        <el-table-column label="报修时间" prop="commitTime"></el-table-column>
+        <el-table-column label="报修小结" prop="remark"></el-table-column>
         <el-table-column align="center" width="120" label="操作">
           <template slot-scope="scope">
             <el-button
@@ -45,6 +59,31 @@
           </template>
         </el-table-column>
       </el-table>
+      <!-- 新增弹框 -->
+      <sys-dialog
+        :title="addDialog.title"
+        :height="addDialog.height"
+        :width="addDialog.width"
+        :visible="addDialog.visible"
+        @onClose="onClose"
+        @onConfirm="onConfirm"
+      >
+        <template slot="content">
+          <el-form
+            :model="addModel"
+            ref="addForm"
+            :rules="rules"
+            label-width="80px"
+            :inline="false"
+            size="small"
+          >
+          
+            <el-form-item prop="remark" label="维修小结">
+              <el-input type="textarea" v-model="addModel.remark"></el-input>
+            </el-form-item>
+          </el-form>
+        </template>
+      </sys-dialog>
       <!-- 分页 -->
       <el-pagination
         @size-change="sizeChange"
@@ -62,9 +101,31 @@
   
   <script>
   import { getListApi, editApi } from "@/api/repair";
+  import { getUserId } from "@/utils/auth";
+  import SysDialog from "@/components/system/SysDialog.vue";
   export default {
+    components: {
+      SysDialog,
+    },
     data() {
       return {
+        options: [{
+          value: '0',
+          label: '未处理'
+        }, {
+          value: '1',
+          label: '已处理'
+        },
+      ],
+        rules: {
+          remark: [
+            {
+              trigger: "change",
+              required: true,
+              message: "请填写维修小结",
+            },
+          ]
+        },
         //表格高度
         tableHeight: 0,
         //表格数据
@@ -74,7 +135,27 @@
           currentPage: 1,
           pageSize: 10,
           userId: "",
-          repairContent: "",
+          remark: "",
+          repairContent:"",
+          status:""
+        },
+        //表单数据域
+        addModel: {
+          editType: "",
+          repairId: "",
+          userId: "",
+          phone: "",
+          repairAddress: "",
+          repairContent:"",
+          remark: "",
+          status:""
+        },
+        //弹框属性定义
+        addDialog: {
+          title: "",
+          height: 200,
+          width: 650,
+          visible: false,
         },
       };
     },
@@ -87,6 +168,29 @@
       });
     },
     methods: {
+      //弹框确认事件
+      onConfirm() {
+        this.$refs.addForm.validate(async (valid) => {
+          if (valid) {
+            //设置用户id
+            this.addModel.userId = getUserId();
+            let res = await editApi(this.addModel);
+            if (res && res.code == 200) {
+              //刷新表格
+              this.getMyList();
+              //信息提示
+              this.$message.success(res.msg);
+              this.addDialog.visible = false;
+              this.getMyList();
+            this.$message.success('处理成功!');
+            }
+          }
+        });
+      },
+      //弹框关闭
+      onClose() {
+        this.addDialog.visible = false;
+      },
       //页数改变时触发
       currentChange(val) {
         this.parms.currentPage = val;
@@ -99,28 +203,25 @@
       },
       //处理
       async doBtn(row) {
-        console.log(row);
         if(row.status =='1'){
            this.$message.warning('该维修已经处理，不要重复处理!')
            return;
         }
-        let confirm = await this.$myconfirm("确定处理该数据吗?");
-        if (confirm) {
-          let parm = {
-            repairId: row.repairId,
-            status: "1",
-          };
-          let res = await editApi(parm);
-          if (res && res.code == 200) {
-            //刷新列表
-            this.getMyList();
-            this.$message.success('处理成功!');
-          }
-        }
+        //清空表单
+        this.$resetForm("addForm", this.addModel);
+        //把当前要编辑的数据复制到表单数据域
+        this.$objCoppy(row, this.addModel);
+        //设置弹框属性
+        this.addDialog.title = "编辑维修";
+        this.addDialog.visible = true;
+        this.addModel.status="1";
+        this.addModel.repairId=row.repairId;
+        
       },
       //重置按钮
       resetBtn() {
         this.parms.repairContent = "";
+        this.parms.status="";
         this.getMyList();
       },
       //搜索按钮

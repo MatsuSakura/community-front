@@ -13,7 +13,30 @@
       </el-form-item>
       <el-form-item label="内容">
         <el-input v-model="parms.complaintContent"></el-input>
-      </el-form-item>
+      </el-form-item><br>
+      <el-form-item label="处理状态">
+          <el-select v-model="parms.status" placeholder="请选择">
+        <el-option
+        v-for="item in options1"
+        label-width="80px"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value">
+        </el-option>
+        </el-select>
+        </el-form-item>
+        <el-form-item label="人文关怀">
+          <el-select v-model="parms.isHelp" placeholder="请选择">
+        <el-option
+        v-for="item in options2"
+        label-width="80px"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value">
+        </el-option>
+        </el-select>
+        </el-form-item>
+
       <el-form-item>
         <el-button icon="el-icon-search" @click="searchBtn">查询</el-button>
         <el-button style="color: #ff7670" @click="resetBtn" icon="el-icon-delete"
@@ -35,12 +58,13 @@
           >
         </template>
       </el-table-column>
+      <el-table-column label="处理小结" prop="remark"></el-table-column>
       <el-table-column prop="isHelp" label="是否为人文关怀事件">
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.ishelp == '0'" type="danger" size="small"
+            <el-tag v-if="scope.row.isHelp == '0'" type="danger" size="small"
               >是</el-tag
             >
-            <el-tag v-if="scope.row.ishelp == '1'" type="success" size="small"
+            <el-tag v-if="scope.row.isHelp == '1'" type="success" size="small"
               >否</el-tag
             >
           </template>
@@ -87,15 +111,9 @@
           :inline="false"
           size="small"
         >
-          <el-form-item prop="title" label="标题">
-            <el-input v-model="addModel.title"></el-input>
-          </el-form-item>
-          <el-form-item prop="complaintContent" label="建议内容">
-            <el-input type="textarea" v-model="addModel.complaintContent"></el-input>
-          </el-form-item>
-          <el-form-item prop="isHelp" label="是否为人文关怀事件">
-            <el-input type="textarea" v-model="addModel.complaintContent"></el-input>
-          </el-form-item>
+        <el-form-item prop="remark" label="处理小结">
+              <el-input type="textarea" v-model="addModel.remark"></el-input>
+            </el-form-item>
         </el-form>
       </template>
     </sys-dialog>
@@ -113,28 +131,32 @@ export default {
   data() {
     return {
       //表单验证规则
+      options1: [{
+          value: '0',
+          label: '未处理'
+        }, {
+          value: '1',
+          label: '已处理'
+        },
+      ],
+      options2: [{
+          value: '0',
+          label: '是'
+        }, {
+          value: '1',
+          label: '否'
+        },
+      ],
       rules: {
-        title: [
-          {
-            trigger: "change",
-            required: true,
-            message: "请填写标题",
-          },
-        ],
-        complaintContent: [
-          {
-            trigger: "change",
-            required: true,
-            message: "请填写建议内容",
-          },
-        ],
-        isHelp: [
-          {
-            trigger: "change",
-            required: true,
-            message: "请填写人文关怀属性",
-          },
-        ],
+        
+          remark: [
+            {
+              trigger: "change",
+              required: true,
+              message: "请填写维修小结",
+            },
+          ]
+        
       },
       //新增投诉绑定对象
       addModel: {
@@ -143,7 +165,7 @@ export default {
         editType: "",
         title: "",
         complaintContent: "",
-        ishelp:""
+        isHelp:""
       },
       //定义弹框属性
       addDialog: {
@@ -163,6 +185,7 @@ export default {
         title: "",
         complaintContent: "",
         total: 0,
+        status:"",
         isHelp:""
       },
     };
@@ -179,22 +202,38 @@ export default {
     //弹框确认事件
     onConfirm() {
       this.$refs.addForm.validate(async (valid) => {
-        if (valid) {
-          this.addModel.userId = getUserId();
-          let res = null;
-          if (this.addModel.editType == "0") {
-            res = await addApi(this.addModel);
-          } else {
-            res = await editApi(this.addModel);
+          if (valid) {
+            //设置用户id
+            this.addModel.userId = getUserId();
+            let res = await editApi(this.addModel);
+            if (res && res.code == 200) {
+              //刷新表格
+              this.getList();
+              //信息提示
+              this.$message.success(res.msg);
+              this.addDialog.visible = false;
+              this.getList();
+            this.$message.success('处理成功!');
+            }
           }
-          if (res && res.code == 200) {
-            //刷新列表
-            this.getList();
-            this.$message.success(res.msg);
-            this.addDialog.visible = false;
-          }
-        }
-      });
+        });
+      // this.$refs.addForm.validate(async (valid) => {
+      //   if (valid) {
+      //     this.addModel.userId = getUserId();
+      //     let res = null;
+      //     if (this.addModel.editType == "0") {
+      //       res = await addApi(this.addModel);
+      //     } else {
+      //       res = await editApi(this.addModel);
+      //     }
+      //     if (res && res.code == 200) {
+      //       //刷新列表
+      //       this.getList();
+      //       this.$message.success(res.msg);
+      //       this.addDialog.visible = false;
+      //     }
+      //   }
+      // });
     },
     //弹框关闭
     onClose() {
@@ -202,29 +241,45 @@ export default {
     },
     //处理按钮
     async doBtn(row){
-      if(row.status == '1'){
-        this.$message.warning('该建议已经处理，无需重复处理！')
-        return;
-      }
-      let parm = {
-        complaintId: row.complaintId,
-        status:'1'
-      };
-      const confirm = await this.$myconfirm("确定处理该建议吗?");
-      if (confirm) {
-        let res = await editApi(parm);
-        if (res && res.code == 200) {
-          //刷新表格
-          this.getList();
-          this.$message.success(res.msg);
+      if(row.status =='1'){
+           this.$message.warning('该建议已经处理，不要重复处理!')
+           return;
         }
-      }
+      //清空表单
+      this.$resetForm("addForm", this.addModel);
+        //把当前要编辑的数据复制到表单数据域
+        this.$objCoppy(row, this.addModel);
+        //设置弹框属性
+        this.addDialog.title = "编辑建议";
+        this.addDialog.visible = true;
+        this.addModel.status=row.status;
+        this.addModel.status="1";
+        this.addModel.repairId=row.repairId;
+      // if(row.status == '1'){
+      //   this.$message.warning('该建议已经处理，无需重复处理！')
+      //   return;
+      // }
+      // let parm = {
+      //   complaintId: row.complaintId,
+      //   status:'1'
+      // };
+      // const confirm = await this.$myconfirm("确定处理该建议吗?");
+      // if (confirm) {
+      //   let res = await editApi(parm);
+      //   if (res && res.code == 200) {
+      //     //刷新表格
+      //     this.getList();
+      //     this.$message.success(res.msg);
+      //   }
+      // }
     },
    
     //重置按钮
     resetBtn() {
       this.parms.title = "";
       this.parms.complaintContent = "";
+      this.parms.status = "";
+      this.parms.isHelp = "";
       this.getList();
     },
     //搜索按钮

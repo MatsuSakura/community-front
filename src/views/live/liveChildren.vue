@@ -38,9 +38,9 @@
             <el-button type="success" size="small" @click="editBtn(scope.row)"
               >编辑</el-button
             >
-            <!-- <el-button  size="small" @click="assignHelp(scope.row)"
+            <el-button  size="small" @click="assignHelp(scope.row)"
               >人文关怀</el-button
-            > -->
+            >
             <el-button type="danger" size="small" @click="deleteBtn(scope.row)"
               >删除</el-button
             >

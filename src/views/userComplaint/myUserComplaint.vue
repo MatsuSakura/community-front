@@ -13,6 +13,28 @@
         </el-form-item>
         <el-form-item label="内容">
           <el-input v-model="parms.complaintContent"></el-input>
+        </el-form-item><br>
+        <el-form-item label="处理状态">
+          <el-select v-model="parms.status" placeholder="请选择">
+        <el-option
+        v-for="item in options1"
+        label-width="80px"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value">
+        </el-option>
+        </el-select>
+        </el-form-item>
+        <el-form-item label="人文关怀">
+          <el-select v-model="parms.isHelp" placeholder="请选择">
+        <el-option
+        v-for="item in options2"
+        label-width="80px"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value">
+        </el-option>
+        </el-select>
         </el-form-item>
         <el-form-item>
           <el-button icon="el-icon-search" @click="searchBtn">查询</el-button>
@@ -38,10 +60,10 @@
         </el-table-column>
         <el-table-column prop="isHelp" label="是否为人文关怀事件">
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.ishelp == '0'" type="danger" size="small"
+            <el-tag v-if="scope.row.isHelp == '0'" type="danger" size="small"
               >是</el-tag
             >
-            <el-tag v-if="scope.row.ishelp == '1'" type="success" size="small"
+            <el-tag v-if="scope.row.isHelp == '1'" type="success" size="small"
               >否</el-tag
             >
           </template>
@@ -103,8 +125,8 @@
             <el-form-item prop="complaintContent" label="建议内容">
               <el-input type="textarea" v-model="addModel.complaintContent"></el-input>
             </el-form-item>
-            <el-form-item prop="ishelp" label="是否为人文关怀事件">
-              <el-radio-group v-model="addModel.ishelp">
+            <el-form-item prop="isHelp" label="是否为人文关怀事件">
+              <el-radio-group v-model="addModel.isHelp">
                 <el-radio :label="'0'">是</el-radio>
                 <el-radio :label="'1'">否</el-radio>
               </el-radio-group>
@@ -125,6 +147,22 @@
     },
     data() {
       return {
+        options1: [{
+          value: '0',
+          label: '未处理'
+        }, {
+          value: '1',
+          label: '已处理'
+        },
+      ],
+      options2: [{
+          value: '0',
+          label: '是'
+        }, {
+          value: '1',
+          label: '否'
+        },
+      ],
         //表单验证规则
         rules: {
           title: [
@@ -141,7 +179,7 @@
               message: "请填写建议内容",
             },
           ],
-          ishelp: [
+          isHelp: [
           {
             trigger: "change",
             required: true,
@@ -156,7 +194,8 @@
           editType: "",
           title: "",
           complaintContent: "",
-          ishelp:""
+          isHelp:"",
+          status:""
         },
         //定义弹框属性
         addDialog: {
@@ -177,7 +216,8 @@
           complaintContent: "",
           total: 0,
           userId:'',
-          ishelp:''
+          isHelp:'',
+          status:""
         },
       };
     },
@@ -197,7 +237,7 @@
             this.addModel.userId = getUserId();
             let res = null;
             if (this.addModel.editType == "0") {
-              if(this.ishelp=='0'){
+              if(this.isHelp=='0'){
                 res = await addHelpApi(this.addModel);
               }else{
                 res = await addApi(this.addModel);
@@ -275,6 +315,8 @@
       resetBtn() {
         this.parms.title = "";
         this.parms.complaintContent = "";
+        this.parms.status = "";
+        this.parms.isHelp = "";
         this.getList();
       },
       //搜索按钮
