@@ -12,7 +12,7 @@ export async function addHelpApi(parm){
     return await http.post("/api/userComplaint/addHelp",parm)
 }
 //编辑
-export async function editApi(parm){
+export async function editComApi(parm){
     return await http.put("/api/userComplaint",parm)
 }
 //删除

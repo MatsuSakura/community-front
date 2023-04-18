@@ -138,7 +138,7 @@
   </template>
   
   <script>
-  import { getMyListApi, addApi, editApi, deleteApi,addHelpApi } from "@/api/userComplaint";
+  import { getMyListApi, addApi, editComApi, deleteApi,addHelpApi } from "@/api/userComplaint";
   import { getUserId } from "@/utils/auth";
   import SysDialog from "@/components/system/SysDialog.vue";
   export default {
@@ -243,7 +243,7 @@
                 res = await addApi(this.addModel);
               }
             } else {
-              res = await editApi(this.addModel);
+              res = await editComApi(this.addModel);
             }
             if (res && res.code == 200) {
               //刷新列表
@@ -266,7 +266,7 @@
         };
         const confirm = await this.$myconfirm("确定处理该建议吗?");
         if (confirm) {
-          let res = await editApi(parm);
+          let res = await editComApi(parm);
           if (res && res.code == 200) {
             //刷新表格
             this.getList();

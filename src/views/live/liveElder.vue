@@ -51,7 +51,7 @@
               >分配房屋</el-button
             >
             <el-button  size="small" @click="assignHelp(scope.row)"
-              >人文关怀</el-button
+              >关怀</el-button
             >
             <el-button v-if="hasPerm('sys:liveUser:leaveHouse')" type="danger" size="small" @click="leaveHose(scope.row)"
               >收回房屋</el-button
@@ -256,12 +256,47 @@
           </el-main>
         </template>
       </sys-dialog>
+      <!-- 新增弹框 -->
+      <sys-dialog
+        :title="HelpDialog.title"
+        :height="HelpDialog.height"
+        :width="HelpDialog.width"
+        :visible="HelpDialog.visible"
+        @onClose="HelpClose"
+        @onConfirm="HelpConfirm"
+      >
+        <template slot="content">
+          <el-form
+            :model="addModel"
+            ref="addForm"
+            :rules="rules"
+            label-width="100px"
+            :inline="false"
+            size="small"
+          >
+            <el-form-item prop="title" label="标题">
+              <el-input v-model="addModel.title"></el-input>
+            </el-form-item>
+            <el-form-item prop="complaintContent" label="建议内容">
+              <el-input type="textarea" v-model="addModel.complaintContent"></el-input>
+            </el-form-item>
+            <!-- <el-form-item prop="isHelp" label="是否为人文关怀事件">
+              <el-radio-group v-model="addModel.isHelp">
+                <el-radio>是</el-radio>
+                <el-radio :disabled ="addModel.editType == 0">否</el-radio>
+              </el-radio-group>
+            </el-form-item> -->
+          </el-form>
+        </template>
+      </sys-dialog>
       
     </el-main>
   </template>
   
   <script>
   import SysDialog from "@/components/system/SysDialog.vue";
+  import { editComApi, addHelpApi } from "@/api/userComplaint";
+  import { getUserId } from "@/utils/auth";
   import {
     getRoleListApi,
     addApi,
@@ -283,6 +318,12 @@
         assignHoseParm: {
           houseId: "",
           userId: "",
+        },
+        HelpDialog: {
+          title: "",
+          height: 250,
+          width: 650,
+          visible: false,
         },
         //分配房屋弹框属性
         assignHouseDialog: {
@@ -326,6 +367,27 @@
         },
         //表单验证规则
         rules: {
+          title: [
+            {
+              trigger: "change",
+              required: true,
+              message: "请填写标题",
+            },
+          ],
+          complaintContent: [
+            {
+              trigger: "change",
+              required: true,
+              message: "请填写建议内容",
+            },
+          ],
+          isHelp: [
+          {
+            trigger: "change",
+            required: true,
+            message: "请填写人文关怀属性",
+          },
+        ],
           username: [
           {
             trigger: "change",
@@ -419,10 +481,38 @@
       });
     },
     methods: {
-        assignHelp(id){
-          this.$router.push({
-            path:"/myUserComplaint"
-          })
+      HelpConfirm(){
+        this.$refs.addForm.validate(async (valid) => {
+          if (valid) {
+            this.addModel.userId = getUserId();
+            let res = null;
+            if (this.addModel.editType == "0") {
+              res = await addHelpApi(this.addModel);
+            } else {
+              res = await editComApi(this.addModel);
+            }
+            if (res && res.code == 200) {
+              //刷新列表
+              this.getList();
+              this.$message.success(res.msg);
+              this.HelpDialog.visible = false;
+            }
+          }
+        });
+      },
+      HelpClose(){
+        this.HelpDialog.visible=false
+      },
+        assignHelp(row){
+          console.log(row.userId);
+          //清空表单
+          this.$resetForm("addForm", this.addModel);
+          this.HelpDialog.visible=true
+          this.HelpDialog.title="添加人文事件"
+          this.addModel.editType="0"
+          this.addModel.isHelp="1"
+          this.addModel.status="0"
+          
         },
       //重置按钮
       resetBtn() {

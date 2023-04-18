@@ -121,7 +121,7 @@
 </template>
 
 <script>
-import { getListApi, addApi, editApi, deleteApi } from "@/api/userComplaint";
+import { getListApi, addApi, editComApi, deleteApi } from "@/api/userComplaint";
 import { getUserId } from "@/utils/auth";
 import SysDialog from "@/components/system/SysDialog.vue";
 export default {
@@ -153,7 +153,7 @@ export default {
             {
               trigger: "change",
               required: true,
-              message: "请填写维修小结",
+              message: "请填写建议小结",
             },
           ]
         
@@ -205,7 +205,7 @@ export default {
           if (valid) {
             //设置用户id
             this.addModel.userId = getUserId();
-            let res = await editApi(this.addModel);
+            let res = await editComApi(this.addModel);
             if (res && res.code == 200) {
               //刷新表格
               this.getList();
@@ -224,7 +224,7 @@ export default {
       //     if (this.addModel.editType == "0") {
       //       res = await addApi(this.addModel);
       //     } else {
-      //       res = await editApi(this.addModel);
+      //       res = await editComApi(this.addModel);
       //     }
       //     if (res && res.code == 200) {
       //       //刷新列表
@@ -265,7 +265,7 @@ export default {
       // };
       // const confirm = await this.$myconfirm("确定处理该建议吗?");
       // if (confirm) {
-      //   let res = await editApi(parm);
+      //   let res = await editComApi(parm);
       //   if (res && res.code == 200) {
       //     //刷新表格
       //     this.getList();
