@@ -100,7 +100,7 @@
             <el-form-item prop="title" label="标题">
               <el-input v-model="addModel.title"></el-input>
             </el-form-item>
-            <el-form-item prop="complaintContent" label="投诉内容">
+            <el-form-item prop="complaintContent" label="建议内容">
               <el-input type="textarea" v-model="addModel.complaintContent"></el-input>
             </el-form-item>
             <el-form-item prop="ishelp" label="是否为人文关怀事件">
@@ -138,7 +138,7 @@
             {
               trigger: "change",
               required: true,
-              message: "请填写投诉内容",
+              message: "请填写建议内容",
             },
           ],
           ishelp: [
@@ -241,7 +241,7 @@
         //设置编辑属性
         this.addModel.editType = "0";
         //设置弹框属性
-        this.addDialog.title = "新增投诉";
+        this.addDialog.title = "新增建议";
         this.addDialog.visible = true;
       },
       //删除按钮

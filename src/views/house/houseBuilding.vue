@@ -222,7 +222,7 @@
         this.$resetForm("addRef", this.addModle);
         //设置弹框属性
         this.addModle.editType = "0"; //标识新增
-        this.addDialog.title = "新增栋数";
+        this.addDialog.title = "新增楼栋";
         this.addDialog.visible = true;
       },
       //重置按钮
