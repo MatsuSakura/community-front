@@ -348,6 +348,7 @@
         tableHeight: 0,
         //用户列表
         tableList: [],
+        offerId:"",
         //角色列表
         roleList: [],
         //表单绑定数据源
@@ -361,9 +362,11 @@
           status: "",
           roleId: "",
           loginName: "",
+          isHelp:"",
           password: "",
           healthProblem:"",
-          healthStatus:""
+          healthStatus:"",
+          offerId:""
         },
         //表单验证规则
         rules: {
@@ -485,12 +488,10 @@
         this.$refs.addForm.validate(async (valid) => {
           if (valid) {
             this.addModel.userId = getUserId();
+            console.log(this.offerId);
+            this.addModel.offerId=this.offerId
             let res = null;
-            if (this.addModel.editType == "0") {
-              res = await addHelpApi(this.addModel);
-            } else {
-              res = await editComApi(this.addModel);
-            }
+            res = await addHelpApi(this.addModel);
             if (res && res.code == 200) {
               //刷新列表
               this.getList();
@@ -503,16 +504,17 @@
       HelpClose(){
         this.HelpDialog.visible=false
       },
-        assignHelp(row){
-          console.log(row.userId);
+        async assignHelp(row){
           //清空表单
           this.$resetForm("addForm", this.addModel);
           this.HelpDialog.visible=true
           this.HelpDialog.title="添加人文事件"
           this.addModel.editType="0"
-          this.addModel.isHelp="1"
           this.addModel.status="0"
-          
+          let res = await getUserByIdApi({ userId: row.userId });
+          console.log(res.data.birthday);
+          this.offerId=res.data.birthday
+
         },
       //重置按钮
       resetBtn() {

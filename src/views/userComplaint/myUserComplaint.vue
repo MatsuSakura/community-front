@@ -235,6 +235,7 @@
         this.$refs.addForm.validate(async (valid) => {
           if (valid) {
             this.addModel.userId = getUserId();
+            
             let res = null;
             if (this.addModel.editType == "0") {
               if(this.isHelp=='0'){
@@ -266,7 +267,7 @@
         };
         const confirm = await this.$myconfirm("确定处理该建议吗?");
         if (confirm) {
-          let res = await editComApi(parm);
+          let res = await editHelpApi(parm);
           if (res && res.code == 200) {
             //刷新表格
             this.getList();
