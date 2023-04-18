@@ -31,9 +31,10 @@
                 <el-tag v-if="scope.row.sex == '0'" type="success" size="normal">女</el-tag>
             </template>
         </el-table-column>
-        <el-table-column align="center" prop="status" label="是否在职">
+        <el-table-column v-if="hasPerm('sys:sysUserList:ban')" align="center" prop="status" label="是否在职">
             <template slot-scope="scope">
           <el-switch
+          
             :active-value="'0'"
             active-text="在职"
             inactive-text="离职"
@@ -43,9 +44,10 @@
           ></el-switch>
         </template>
         </el-table-column>
-        <el-table-column align="center" prop="isUsed" label="账户状态">
+        <el-table-column v-if="hasPerm('sys:sysUserList:ban')" align="center" prop="isUsed" label="账户状态">
             <template slot-scope="scope">
             <el-switch
+            
             :active-value="'0'"
             active-text="启用"
             inactive-text="禁用"
