@@ -14,6 +14,13 @@
         <el-form-item label="电话">
           <el-input v-model="parms.phone"></el-input>
         </el-form-item>
+        <el-form-item label="照料情况">
+        <el-select v-model="parms.healthStatus" placeholder="请选择">
+          <el-option v-for="item in options" label-width="80px" :key="item.value" :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
         <el-form-item>
           <el-button icon="el-icon-search" @click="searchBtn">查询</el-button>
           <el-button style="color: #ff7670" icon="el-icon-delete" @click="resetBtn">重置</el-button>
@@ -127,12 +134,12 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item prop="username" label="账户">
+            <!-- <el-form-item prop="username" label="账户">
             <el-input v-model="addModel.username"></el-input>
-          </el-form-item>
-          <el-form-item v-if="addModel.editType != '1'" prop="password" label="密码">
+          </el-form-item> -->
+          <!-- <el-form-item v-if="addModel.editType != '1'" prop="password" label="密码">
             <el-input v-model="addModel.password"></el-input>
-          </el-form-item>
+          </el-form-item> -->
             <el-form-item prop="status" label="状态">
               <el-radio-group v-model="addModel.status">
                 <el-radio :label="'0'">启用</el-radio>
@@ -312,6 +319,14 @@
     components: { SysDialog },
     data() {
       return {
+        options: [{
+        value: '0',
+        label: '有人照料'
+      }, {
+        value: '1',
+        label: '无人照料'
+      },
+      ],
         //分配房屋列表高度
         assignTableHeight: 0,
         //分配房屋提交的数据
@@ -470,6 +485,7 @@
           currentPage: 1,
           pageSize: 10,
           total: 0,
+          healthStatus:""
         },
       };
     },
@@ -524,6 +540,7 @@
       resetBtn() {
         this.parms.loginName = "";
         this.parms.phone = "";
+        this.parms.healthStatus="";
         this.getList();
       },
       //查询按钮

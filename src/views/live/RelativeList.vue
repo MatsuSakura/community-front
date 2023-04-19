@@ -12,7 +12,7 @@
       <el-table-column prop="menuLabel" label="用户名称"></el-table-column>
       <el-table-column prop="type" label="亲属类型">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.parentId == '0'">父级亲属</el-tag>
+          <el-tag v-if="scope.row.parentId == '0'">用户</el-tag>
           <el-tag type="success" v-else-if="scope.row.type == '1'">儿子</el-tag>
           <el-tag type="success" v-else-if="scope.row.type == '2'">女儿</el-tag>
           <el-tag type="warning" v-else-if="scope.row.type == '3'">父亲</el-tag>
@@ -27,7 +27,7 @@
           <el-tag type="info" v-else="scope.row.type == '12'">其他</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="relName" label="亲属名称"> </el-table-column>
+      <!-- <el-table-column prop="relName" label="亲属名称"> </el-table-column> -->
       <el-table-column prop="name" label="楼栋"></el-table-column>
       <el-table-column prop="unitName" label="单元"></el-table-column>
       <el-table-column prop="houseNum" label="房屋编号"></el-table-column>
@@ -65,9 +65,9 @@
           <el-form-item prop="menuLabel" label="亲属名称">
             <el-input v-model="addModel.menuLabel" placeholder="请填写亲属名称" size="small"></el-input>
           </el-form-item>
-          <el-form-item prop="relName" label="亲属名称">
+          <!-- <el-form-item prop="relName" label="亲属名称">
             <el-input v-model="addModel.relName" placeholder="请填写亲属名称" size="small"></el-input>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="备注">
             <el-input v-model="addModel.remark" placeholder="请填写备注" size="small"></el-input>
           </el-form-item>
