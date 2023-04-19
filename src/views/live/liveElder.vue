@@ -488,8 +488,12 @@
         this.$refs.addForm.validate(async (valid) => {
           if (valid) {
             this.addModel.userId = getUserId();
-            console.log(this.offerId);
-            this.addModel.offerId=this.offerId
+            var date=new Date(this.offerId)
+            var date2=new Date()
+            var year=date.getFullYear()
+            var today=date2.getFullYear()
+            var age=today-year
+            this.addModel.offerId=age
             let res = null;
             res = await addHelpApi(this.addModel);
             if (res && res.code == 200) {

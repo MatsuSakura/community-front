@@ -69,6 +69,19 @@
             >
           </template>
         </el-table-column>
+        <el-table-column label="关怀群体" prop="offerId">
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.offerId >= '60'" type="danger" size="small"
+              >老年人</el-tag
+            >
+            <el-tag v-else-if="scope.row.offerId <= 10" type="warning" size="small"
+              >儿童</el-tag
+            >
+            <el-tag v-else="scope.row.offerId >= '20'" type="success" size="small"
+              >中青年</el-tag
+            >
+          </template>
+        </el-table-column>
       <el-table-column align="center" width="120" label="操作">
         <template slot-scope="scope">
           <el-button
@@ -186,7 +199,9 @@ export default {
         complaintContent: "",
         total: 0,
         status:"",
-        isHelp:""
+        isHelp:"",
+        offerId:"",
+        offerGroup:""
       },
     };
   },
@@ -217,23 +232,6 @@ export default {
             }
           }
         });
-      // this.$refs.addForm.validate(async (valid) => {
-      //   if (valid) {
-      //     this.addModel.userId = getUserId();
-      //     let res = null;
-      //     if (this.addModel.editType == "0") {
-      //       res = await addApi(this.addModel);
-      //     } else {
-      //       res = await editComApi(this.addModel);
-      //     }
-      //     if (res && res.code == 200) {
-      //       //刷新列表
-      //       this.getList();
-      //       this.$message.success(res.msg);
-      //       this.addDialog.visible = false;
-      //     }
-      //   }
-      // });
     },
     //弹框关闭
     onClose() {
@@ -255,23 +253,6 @@ export default {
         this.addModel.status=row.status;
         this.addModel.status="1";
         this.addModel.repairId=row.repairId;
-      // if(row.status == '1'){
-      //   this.$message.warning('该建议已经处理，无需重复处理！')
-      //   return;
-      // }
-      // let parm = {
-      //   complaintId: row.complaintId,
-      //   status:'1'
-      // };
-      // const confirm = await this.$myconfirm("确定处理该建议吗?");
-      // if (confirm) {
-      //   let res = await editComApi(parm);
-      //   if (res && res.code == 200) {
-      //     //刷新表格
-      //     this.getList();
-      //     this.$message.success(res.msg);
-      //   }
-      // }
     },
    
     //重置按钮

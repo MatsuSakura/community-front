@@ -314,6 +314,7 @@
         tableList: [],
         //角色列表
         roleList: [],
+        offerId:"",
         //表单绑定数据源
         addModel: {
           editType: "",
@@ -436,12 +437,14 @@
         this.$refs.addForm.validate(async (valid) => {
           if (valid) {
             this.addModel.userId = getUserId();
+            var date=new Date(this.offerId)
+            var date2=new Date()
+            var year=date.getFullYear()
+            var today=date2.getFullYear()
+            var age=today-year
+            this.addModel.offerId=age
             let res = null;
-            if (this.addModel.editType == "0") {
-              res = await addHelpApi(this.addModel);
-            } else {
-              res = await editComApi(this.addModel);
-            }
+            res = await addHelpApi(this.addModel);
             if (res && res.code == 200) {
               //刷新列表
               this.getList();
@@ -454,16 +457,17 @@
       HelpClose(){
         this.HelpDialog.visible=false
       },
-        assignHelp(row){
-          console.log(row.userId);
+        async assignHelp(row){
           //清空表单
           this.$resetForm("addForm", this.addModel);
           this.HelpDialog.visible=true
           this.HelpDialog.title="添加人文事件"
           this.addModel.editType="0"
-          this.addModel.isHelp="0"
           this.addModel.status="0"
-          
+          let res = await getUserByIdApi({ userId: row.userId });
+          console.log(res.data.birthday);
+          this.offerId=res.data.birthday
+
         },
       //重置按钮
       resetBtn() {
