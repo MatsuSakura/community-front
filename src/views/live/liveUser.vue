@@ -101,8 +101,8 @@
           </el-form-item>
           <el-form-item prop="birthday" label="出生年月">
               <el-date-picker
-                format="yyyy-MM-DD"
-                value-format="yyyy-MM-DD"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
                 v-model="addModel.birthday"
                 type="date"
                 placeholder="选择月份"
@@ -415,6 +415,13 @@ export default {
       },
       //表单验证规则
       rules: {
+        username: [
+          {
+            trigger: "change",
+            required: true,
+            message: "请填写登录名",
+          },
+        ],
         loginName: [
           {
             trigger: "change",
