@@ -724,7 +724,7 @@ export default {
       //获取未分配的房屋列表
       this.getAssignHoseList();
       //弹框属性设置
-      this.assignHouseDialog.title = "为【" + row.userName + "】分配房屋";
+      this.assignHouseDialog.title = "为【" + row.loginName + "】分配房屋";
       this.assignHouseDialog.visible = true;
       //设置分配人
       this.assignHoseParm.userId = row.userId;
