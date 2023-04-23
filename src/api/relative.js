@@ -4,8 +4,8 @@ export async function addRelativeApi(parm){
     return await http.post("/api/relative",parm);
 }
 //获取
-export async function getRelativeListApi(){
-    return await http.get("/api/relative/list",null);
+export async function getRelativeListApi(parm){
+    return await http.get("/api/relative/list",parm);
 }
 
 //获取上级

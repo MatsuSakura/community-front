@@ -1,15 +1,29 @@
 <template>
   <el-main>
+    <!-- 搜索框 -->
+    <el-form :model="parms" ref="searchForm" label-width="80px" :inline="true" size="small">
+      <el-form-item label="姓名">
+        <el-input v-model="parms.menuLabel"></el-input>
+      </el-form-item>
+      <el-form-item label="手机号">
+        <el-input v-model="parms.phone"></el-input>
+      </el-form-item>
+      <el-button type="small" icon="el-icon-search" @click="searchBtn">查询</el-button>
+      <el-button type="small" style="color: #ff7670" icon="el-icon-delete" @click="resetBtn">重置</el-button>
+      <el-button  v-if="hasPerm('sys:RelativeList:add')" type="small" icon="el-icon-plus"
+        @click="addRelative">新增</el-button>
+    </el-form>
     <!-- 新增按钮 -->
-    <el-form size="small">
+    <!-- <el-form size="small">
       <el-form-item>
         <el-button v-if="hasPerm('sys:RelativeList:add')" type="primary" icon="el-icon-plus"
           @click="addRelative">新增</el-button>
       </el-form-item>
-    </el-form>
+    </el-form> -->
     <el-table :height="tableHeight" :data="tableList" row-key="sysRelId" :tree-props="{ children: 'children' }" border
       stripe>
       <el-table-column prop="menuLabel" label="用户名称"></el-table-column>
+      <el-table-column prop="phone" label="手机号"></el-table-column>
       <el-table-column prop="type" label="亲属类型">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.parentId == '0'">用户</el-tag>
@@ -65,9 +79,9 @@
           <el-form-item prop="menuLabel" label="亲属名称">
             <el-input v-model="addModel.menuLabel" placeholder="请填写亲属名称" size="small"></el-input>
           </el-form-item>
-          <!-- <el-form-item prop="relName" label="亲属名称">
-            <el-input v-model="addModel.relName" placeholder="请填写亲属名称" size="small"></el-input>
-          </el-form-item> -->
+          <el-form-item prop="phone" label="手机号">
+            <el-input v-model="addModel.phone" placeholder="请填写手机号" size="small"></el-input>
+          </el-form-item>
           <el-form-item label="备注">
             <el-input v-model="addModel.remark" placeholder="请填写备注" size="small"></el-input>
           </el-form-item>
@@ -112,6 +126,15 @@ export default {
   },
   data() {
     return {
+      //参数
+      parms: {
+        loginName: "",
+        menuLabel:"",
+        phone:"",
+        currentPage: 1,
+        pageSize: 8,
+        total: 0,
+      },
       //0：用户，1：儿子，2：女儿3：父亲，4：母亲5：爷爷，6：奶奶7：外婆，8：外公，9：舅舅，10：舅妈
       options: [{
         value: '0',
@@ -257,6 +280,14 @@ export default {
     });
   },
   methods: {
+    searchBtn() {
+      this.getRelativeList();
+    },
+    resetBtn() {
+      this.parms.menuLabel = "";
+      this.parms.phone = "";
+      this.getRelativeList();
+    },
     //编辑按钮
     editRelative(row) {
       //清空表单
@@ -346,7 +377,7 @@ export default {
     },
     //获取列表
     async getRelativeList() {
-      let res = await getRelativeListApi();
+      let res = await getRelativeListApi(this.parms);
       if (res && res.code == 200) {
         this.tableList = res.data;
       }
