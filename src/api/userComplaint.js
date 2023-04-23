@@ -3,6 +3,9 @@ import http from '@/utils/http'
 export async function getListApi(parm){
     return await http.get("/api/userComplaint/list",parm)
 }
+export async function getChartListApi(parm){
+    return await http.get("/api/userComplaint/Chartlist",parm)
+}
 //新增
 export async function addApi(parm){
     return await http.post("/api/userComplaint/add",parm)

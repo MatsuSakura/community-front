@@ -8,9 +8,13 @@
       </el-table>
       <!-- <img src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80"> -->
       <div class="dashboard-text">name: {{ name }}<br></div>
-      <el-button @click="rwBtn" type="success" plain>人文关怀事件的年龄段分析</el-button>
+      <!-- <el-button @click="rwBtn" type="success" plain>人文关怀事件的年龄段分析</el-button> -->
+      <el-button @click="pieRwBtn" type="success" plain>人文关怀事件的年龄段分析</el-button>
+      <el-button @click="piePersonNumBtn" type="success" plain>报修的处理率</el-button>
     </div>
-    <rw-chart v-if="parms.visible != false"/>
+    <!-- <rw-chart v-if="parms.rwvisible != false"/> -->
+    <pie-chart v-if="parms.pievisible != false"/>
+    <pie-chart v-if="parms.pnvisible != false"/>
   </el-main>
 </template>
 
@@ -19,10 +23,12 @@ import { mapGetters } from 'vuex'
 import { getListApi } from "@/api/notice";
 import SysDialog from "@/components/system/SysDialog.vue";
 import rwChart from "@/components/charts/renwenChart.vue";
+import pieChart from '@/components/charts/pieChart.vue'
 export default {
   components: {
     SysDialog,
-    rwChart
+    rwChart,
+    pieChart
   },
   data() {
     return {
@@ -31,9 +37,6 @@ export default {
       tableHeight: 0,
       //表格数据
       tableList: [],
-      addModel:{
-        visible:false
-      },
       parms: {
         currentPage: 1,
         pageSize: 10,
@@ -41,7 +44,8 @@ export default {
         complaintContent: "",
         total: 0,
         status: "",
-        visible:false,
+        pnvisible:false,
+        pievisible:false,
         isHelp: "",
         offerId: "",
         offerGroup: ""
@@ -50,16 +54,18 @@ export default {
   },
   created() {
     this.$nextTick(() => {
-      this.getlList();
+      this.getList();
     });
   },
   methods: {
-    rwBtn(){
-      console.log("确定");
-      this.parms.visible = !this.parms.visible
+    pieRwBtn(){
+      this.parms.pievisible = !this.parms.pievisible
     },
-    //获取列表
-    async getlList() {
+    piePersonNumBtn(){
+      console.log("确定");
+      this.parms.pnvisible = !this.parms.pnvisible
+    },
+    async getList() {
       let res = await getListApi(this.parms);
       if (res && res.code == 200) {
         //给表格赋值

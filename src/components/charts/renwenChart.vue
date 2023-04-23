@@ -68,8 +68,10 @@ export default {
                     console.log(res.data.records);
                     var item = res.data.records[i];
                     console.log(item.complaintContent);
-                    this.option.xAxis.data.push(item.complaintContent);
-                    this.option.series[0].data.push(item.offerId);
+                    if (item.complaintContent != null && item.offerId != null) {
+                        this.option.xAxis.data.push(item.complaintContent);
+                        this.option.series[0].data.push(item.offerId);
+                    }
                 }
             })
         }
