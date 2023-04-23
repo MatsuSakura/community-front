@@ -10,11 +10,14 @@
       <div class="dashboard-text">name: {{ name }}<br></div>
       <!-- <el-button @click="rwBtn" type="success" plain>人文关怀事件的年龄段分析</el-button> -->
       <el-button @click="pieRwBtn" type="success" plain>人文关怀事件的年龄段分析</el-button>
-      <el-button @click="piePersonNumBtn" type="success" plain>报修的处理率</el-button>
+      <el-button @click="pieRepairBtn" type="success" plain>报修的处理率</el-button>
+      <el-button @click="piePersonNumBtn" type="success" plain>人员年龄分布</el-button>
     </div>
     <!-- <rw-chart v-if="parms.rwvisible != false"/> -->
     <pie-chart v-if="parms.pievisible != false"/>
-    <pie-chart v-if="parms.pnvisible != false"/>
+    <repair-chart v-if="parms.repairVisible != false"/>
+    <person-num-chart v-if="parms.pnvisible != false"/>
+  
   </el-main>
 </template>
 
@@ -24,11 +27,15 @@ import { getListApi } from "@/api/notice";
 import SysDialog from "@/components/system/SysDialog.vue";
 import rwChart from "@/components/charts/renwenChart.vue";
 import pieChart from '@/components/charts/pieChart.vue'
+import repairChart from '@/components/charts/pieRepairChart.vue'
+import personNumChart from '@/components/charts/piePersonNumChart.vue'
 export default {
   components: {
     SysDialog,
     rwChart,
-    pieChart
+    pieChart,
+    repairChart,
+    personNumChart
   },
   data() {
     return {
@@ -46,6 +53,7 @@ export default {
         status: "",
         pnvisible:false,
         pievisible:false,
+        repairVisible:false,
         isHelp: "",
         offerId: "",
         offerGroup: ""
@@ -61,8 +69,10 @@ export default {
     pieRwBtn(){
       this.parms.pievisible = !this.parms.pievisible
     },
+    pieRepairBtn(){
+      this.parms.repairVisible = !this.parms.repairVisible
+    },
     piePersonNumBtn(){
-      console.log("确定");
       this.parms.pnvisible = !this.parms.pnvisible
     },
     async getList() {

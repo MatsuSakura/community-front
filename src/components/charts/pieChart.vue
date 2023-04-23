@@ -26,35 +26,6 @@ export default {
                 isHelp: "",
                 offerId: "",
             },
-            option: {
-                legend: {
-                    top: 'top'
-                },
-                toolbox: {
-                    show: true,
-                    feature: {
-                        mark: { show: true },
-                        // dataView: { show: true, readOnly: false },
-                        // restore: { show: true },
-                        // saveAsImage: { show: false }
-                    }
-                },
-                series: [
-                    {
-                        name: '人文关怀事件年龄段表',
-                        type: 'pie',
-                        radius: [20, 200],
-                        center: ['50%', '50%'],
-                        roseType: 'area',
-                        itemStyle: {
-                            borderRadius: 5
-                        },
-                        data: [
-                            { value: '', name: '' }
-                        ]
-                    }
-                ]
-            }
         };
 
     },
@@ -68,41 +39,39 @@ export default {
         getData() {
             getComList(this.parms).then((res) => {
                 var item = res.data.records;
-                    setTimeout(() => {
-                        this.myChart.setOption({
-                            title: {
-                                text: '人文关怀事件年龄段表',
-                                // subtext: 'Fake Data',
-                                left: 'center'
+                setTimeout(() => {
+                    this.myChart.setOption({
+                        title: {
+                            text: '人文关怀事件年龄段表',
+                            // subtext: 'Fake Data',
+                            left: 'center'
+                        },
+                        tooltip: {
+                            trigger: 'item'
+                        },
+                        legend: {
+                            orient: 'vertical',
+                            left: 'left'
+                        },
+                        toolbox: {
+                            show: true,
+                            feature: {
+                                mark: { show: true },
+                            }
+                        },
+                        series: [{
+                            name: '',
+                            type: 'pie',
+                            radius: [20, 200],
+                            center: ['50%', '50%'],
+                            roseType: 'area',
+                            itemStyle: {
+                                borderRadius: 8
                             },
-                            tooltip: {
-                                trigger: 'item'
-                            },
-                            legend: {
-                                top: 'bottom'
-                            },
-                            toolbox: {
-                                show: true,
-                                feature: {
-                                    mark: { show: true },
-                                    // dataView: { show: true, readOnly: false },
-                                    // restore: { show: true },
-                                    // saveAsImage: { show: false }
-                                }
-                            },
-                            series: [{
-                                name: '',
-                                type: 'pie',
-                                radius: [20, 200],
-                                center: ['50%', '50%'],
-                                roseType: 'area',
-                                itemStyle: {
-                                    borderRadius: 8
-                                },
-                                data: res.data.records.map(i => ({ value: i.offerId, name: i.complaintContent }))
-                            }]
-                        })
-                    }, 800)
+                            data: res.data.records.map(i => ({ value: i.offerId, name: i.complaintContent }))
+                        }]
+                    })
+                }, 800)
             })
         }
     },
@@ -112,9 +81,6 @@ export default {
     mounted() {
         this.myChart = echarts.init(document.getElementById('main'));
         this.getData();
-        // setTimeout(() => {
-        //     this.myChart.setOption(this.option);
-        // }, 800)
     }
 }
 </script>
