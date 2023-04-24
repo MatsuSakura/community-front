@@ -70,16 +70,17 @@ export default {
                             name: 'Access From',
                             type: 'pie',
                             radius: '50%',
-                            // data: res.data.records.map(i => ({
-                            //     value: i.status,
-                            //     name: "已维修"
-                            // }
-                            // )),
                             data: [
                                 { value: this.parms.ElderNum, name: '老年人数量' },
                                 { value: this.parms.WorkerNum, name: '中青年数量' },
                                 { value: this.parms.ChildNum, name: '学童数量' },
                             ],
+                            label: {
+                                show: true,
+                                formatter(param) {
+                                    return param.name + ' (' + param.percent  + '%)';
+                                }
+                            },
                             emphasis: {
                                 itemStyle: {
                                     shadowBlur: 10,
