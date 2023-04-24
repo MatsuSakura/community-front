@@ -41,21 +41,24 @@ export default {
                 var item = res.data.records;
                 setTimeout(() => {
                     this.myChart.setOption({
+                        title: {
+                            text: '人文关怀事件年龄段表',
+                            // subtext: 'Fake Data',
+                            left: 'center'
+                        },
                         tooltip: {
                             trigger: 'item'
                         },
                         legend: {
-                            top: '5%',
-                            left: 'center',
-                            selectedMode: false
+                            orient: 'vertical',
+                            left: 'left'
                         },
                         series: [
                             {
                                 name: 'Access From',
                                 type: 'pie',
-                                radius: ['40%', '70%'],
+                                radius: ['30%', '60%'],
                                 center: ['50%', '70%'],
-                                // adjust the start angle
                                 startAngle: 180,
                                 label: {
                                     show: true,
@@ -88,7 +91,7 @@ export default {
                         // series: [{
                         //     name: '',
                         //     type: 'pie',
-                        //     radius: [20, 200],
+                        //     radius: [20, 150],
                         //     center: ['50%', '50%'],
                         //     roseType: 'area',
                         //     itemStyle: {
