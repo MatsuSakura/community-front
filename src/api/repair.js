@@ -7,6 +7,9 @@ export async function getMyListApi(parm){
 export async function getListApi(parm){
     return await http.get("/api/userRepair/list",parm)
 }
+export async function getRepairedListApi(parm){
+    return await http.get("/api/userRepair/repairedlist",parm)
+}
 //新增维修
 export async function addApi(parm){
     return await http.post("/api/userRepair",parm)

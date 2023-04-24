@@ -6,14 +6,11 @@
         <el-table-column label="内容" prop="noticeContent"></el-table-column>
         <el-table-column label="时间" prop="createTime"></el-table-column>
       </el-table>
-      <!-- <img src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80"> -->
       <div class="dashboard-text">name: {{ name }}<br></div>
-      <!-- <el-button @click="rwBtn" type="success" plain>人文关怀事件的年龄段分析</el-button> -->
       <el-button @click="pieRwBtn" type="success" plain>人文关怀事件的年龄段分析</el-button>
       <el-button @click="pieRepairBtn" type="success" plain>报修的处理率</el-button>
       <el-button @click="piePersonNumBtn" type="success" plain>人员年龄分布</el-button>
     </div>
-    <!-- <rw-chart v-if="parms.rwvisible != false"/> -->
     <pie-chart v-if="parms.pievisible != false"/>
     <repair-chart v-if="parms.repairVisible != false"/>
     <person-num-chart v-if="parms.pnvisible != false"/>

@@ -41,35 +41,61 @@ export default {
                 var item = res.data.records;
                 setTimeout(() => {
                     this.myChart.setOption({
-                        title: {
-                            text: '人文关怀事件年龄段表',
-                            // subtext: 'Fake Data',
-                            left: 'center'
-                        },
                         tooltip: {
                             trigger: 'item'
                         },
                         legend: {
-                            orient: 'vertical',
-                            left: 'left'
+                            top: '5%',
+                            left: 'center',
+                            selectedMode: false
                         },
-                        toolbox: {
-                            show: true,
-                            feature: {
-                                mark: { show: true },
+                        series: [
+                            {
+                                name: 'Access From',
+                                type: 'pie',
+                                radius: ['40%', '70%'],
+                                center: ['50%', '70%'],
+                                // adjust the start angle
+                                startAngle: 180,
+                                label: {
+                                    show: true,
+                                    formatter(param) {
+                                        // correct the percentage
+                                        return param.name + ' (' + param.percent * 2 + '%)';
+                                    }
+                                },
+                                data: res.data.records.map(i => ({ value: i.offerId, name: i.complaintContent }))
                             }
-                        },
-                        series: [{
-                            name: '',
-                            type: 'pie',
-                            radius: [20, 200],
-                            center: ['50%', '50%'],
-                            roseType: 'area',
-                            itemStyle: {
-                                borderRadius: 8
-                            },
-                            data: res.data.records.map(i => ({ value: i.offerId, name: i.complaintContent }))
-                        }]
+                        ]
+                        // title: {
+                        //     text: '人文关怀事件年龄段表',
+                        //     // subtext: 'Fake Data',
+                        //     left: 'center'
+                        // },
+                        // tooltip: {
+                        //     trigger: 'item'
+                        // },
+                        // legend: {
+                        //     orient: 'vertical',
+                        //     left: 'left'
+                        // },
+                        // toolbox: {
+                        //     show: true,
+                        //     feature: {
+                        //         mark: { show: true },
+                        //     }
+                        // },
+                        // series: [{
+                        //     name: '',
+                        //     type: 'pie',
+                        //     radius: [20, 200],
+                        //     center: ['50%', '50%'],
+                        //     roseType: 'area',
+                        //     itemStyle: {
+                        //         borderRadius: 8
+                        //     },
+                        //     data: res.data.records.map(i => ({ value: i.offerId, name: i.complaintContent }))
+                        // }]
                     })
                 }, 800)
             })

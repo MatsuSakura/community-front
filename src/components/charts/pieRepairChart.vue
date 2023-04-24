@@ -7,12 +7,11 @@
 <script>
 import * as echarts from 'echarts'
 import SysDialog from "@/components/system/SysDialog.vue";
-import { getListApi } from "@/api/repair"
+import { getListApi, getRepairedListApi } from "@/api/repair"
 export default {
     components: {
         SysDialog,
     },
-
     data() {
         this.myChart = null;
         return {
@@ -23,37 +22,9 @@ export default {
                 userId: "",
                 remark: "",
                 repairContent: "",
-                status: ""
+                status: "",
+                repairedNum: "",
             },
-            // option: {
-            //     legend: {
-            //         top: 'top'
-            //     },
-            //     toolbox: {
-            //         show: true,
-            //         feature: {
-            //             mark: { show: true },
-            //             // dataView: { show: true, readOnly: false },
-            //             // restore: { show: true },
-            //             // saveAsImage: { show: false }
-            //         }
-            //     },
-            //     series: [
-            //         {
-            //             name: '人文关怀事件年龄段表',
-            //             type: 'pie',
-            //             radius: [20, 200],
-            //             center: ['50%', '50%'],
-            //             roseType: 'area',
-            //             itemStyle: {
-            //                 borderRadius: 5
-            //             },
-            //             data: [
-            //                 { value: '', name: '' }
-            //             ]
-            //         }
-            //     ]
-            // }
         };
 
     },
@@ -64,44 +35,14 @@ export default {
 
     },
     methods: {
-        getData() {
-            getListApi(this.parms).then((res) => {
+        getChart() {
+            getRepairedListApi(this.parms).then(async (res) => {
+                this.parms.repairedNum = res.data.total
+            })
+            getListApi(this.parms).then(async (res) => {
                 console.log(res);
-                var item = res.data.records;
+                var tmp = res.data.total - this.parms.repairedNum;
                 setTimeout(() => {
-                    // this.myChart.setOption({
-                    //     title: {
-                    //         text: '人文关怀事件年龄段表',
-                    //         // subtext: 'Fake Data',
-                    //         left: 'center'
-                    //     },
-                    //     tooltip: {
-                    //         trigger: 'item'
-                    //     },
-                    //     legend: {
-                    //         top: 'bottom'
-                    //     },
-                    //     toolbox: {
-                    //         show: true,
-                    //         feature: {
-                    //             mark: { show: true },
-                    //             // dataView: { show: true, readOnly: false },
-                    //             // restore: { show: true },
-                    //             // saveAsImage: { show: false }
-                    //         }
-                    //     },
-                    //     series: [{
-                    //         name: '',
-                    //         type: 'pie',
-                    //         radius: [20, 200],
-                    //         center: ['50%', '50%'],
-                    //         roseType: 'area',
-                    //         itemStyle: {
-                    //             borderRadius: 8
-                    //         },
-                    //         data: res.data.records.map(i => ({ value: i.offerId, name: i.complaintContent }))
-                    //     }]
-                    // })
                     this.myChart.setOption({
                         title: {
                             text: '报修的处理率',
@@ -112,25 +53,23 @@ export default {
                         },
                         legend: {
                             orient: 'vertical',
-                            left: 'left'
+                            left: 'left',
                         },
                         series: [
                             {
                                 name: 'Access From',
                                 type: 'pie',
                                 radius: '50%',
-                                data: res.data.records.map(i => ({
-                                     value: i.status, 
-                                     name: "已维修"
+                                data: [
+                                    { value: this.parms.repairedNum, name: '已处理' },
+                                    { value: tmp, name: '未处理' },
+                                ],
+                                label: {
+                                    show: true,
+                                    formatter(param) {
+                                        return param.name + ' (' + param.percent + '%)';
                                     }
-                                    )),
-                                // data: [
-                                //     { value: 1048, name: 'Search Engine' },
-                                //     { value: 735, name: 'Direct' },
-                                //     { value: 580, name: 'Email' },
-                                //     { value: 484, name: 'Union Ads' },
-                                //     { value: 300, name: 'Video Ads' }
-                                // ],
+                                },
                                 emphasis: {
                                     itemStyle: {
                                         shadowBlur: 10,
@@ -150,10 +89,7 @@ export default {
     },
     mounted() {
         this.myChart = echarts.init(document.getElementById('main'));
-        this.getData();
-        // setTimeout(() => {
-        //     this.myChart.setOption(this.option);
-        // }, 800)
+        this.getChart();
     }
 }
 </script>
