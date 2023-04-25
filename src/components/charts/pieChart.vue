@@ -53,52 +53,29 @@ export default {
                             orient: 'vertical',
                             left: 'left'
                         },
-                        series: [
-                            {
-                                name: 'Access From',
-                                type: 'pie',
-                                radius: ['30%', '60%'],
-                                center: ['50%', '70%'],
-                                startAngle: 180,
-                                label: {
-                                    show: true,
-                                    formatter(param) {
-                                        // correct the percentage
-                                        return param.name + ' (' + param.percent * 2 + '%)';
-                                    }
-                                },
-                                data: res.data.records.map(i => ({ value: i.offerId, name: i.complaintContent }))
+                        toolbox: {
+                            show: true,
+                            feature: {
+                                mark: { show: true },
                             }
-                        ]
-                        // title: {
-                        //     text: '人文关怀事件年龄段表',
-                        //     // subtext: 'Fake Data',
-                        //     left: 'center'
-                        // },
-                        // tooltip: {
-                        //     trigger: 'item'
-                        // },
-                        // legend: {
-                        //     orient: 'vertical',
-                        //     left: 'left'
-                        // },
-                        // toolbox: {
-                        //     show: true,
-                        //     feature: {
-                        //         mark: { show: true },
-                        //     }
-                        // },
-                        // series: [{
-                        //     name: '',
-                        //     type: 'pie',
-                        //     radius: [20, 150],
-                        //     center: ['50%', '50%'],
-                        //     roseType: 'area',
-                        //     itemStyle: {
-                        //         borderRadius: 8
-                        //     },
-                        //     data: res.data.records.map(i => ({ value: i.offerId, name: i.complaintContent }))
-                        // }]
+                        },
+                        series: [{
+                            name: '',
+                            type: 'pie',
+                            radius: [20, 150],
+                            center: ['50%', '50%'],
+                            roseType: 'area',
+                            itemStyle: {
+                                borderRadius: 8
+                            },
+                            label: {
+                                show: true,
+                                formatter(param) {
+                                    return param.name + ' (' + param.percent  + '%)';
+                                }
+                            },
+                            data: res.data.records.map(i => ({ value: i.offerId, name: i.complaintContent }))
+                        }]
                     })
                 }, 800)
             })

@@ -6,12 +6,13 @@
         <el-table-column label="内容" prop="noticeContent"></el-table-column>
         <el-table-column label="时间" prop="createTime"></el-table-column>
       </el-table>
-      <div class="dashboard-text">name: {{ name }}<br></div>
-      <el-button @click="pieRwBtn" type="success" plain>人文关怀事件的年龄段分析</el-button>
+      <div class="dashboard-text">当前登录账号: {{ name }}<br></div>
+      <el-button @click="RwBtn" type="success" plain>人文关怀事件的年龄段分析</el-button>
       <el-button @click="pieRepairBtn" type="success" plain>报修的处理率</el-button>
       <el-button @click="piePersonNumBtn" type="success" plain>人员年龄分布</el-button>
     </div>
-    <pie-chart v-if="parms.pievisible != false"/>
+    <!-- <pie-chart v-if="parms.pievisible != false"/> -->
+    <rw-chart v-if="parms.rwvisible != false"/>
     <repair-chart v-if="parms.repairVisible != false"/>
     <person-num-chart v-if="parms.pnvisible != false"/>
   
@@ -49,7 +50,7 @@ export default {
         total: 0,
         status: "",
         pnvisible:false,
-        pievisible:false,
+        rwvisible:false,
         repairVisible:false,
         isHelp: "",
         offerId: "",
@@ -63,8 +64,8 @@ export default {
     });
   },
   methods: {
-    pieRwBtn(){
-      this.parms.pievisible = !this.parms.pievisible
+    RwBtn(){
+      this.parms.rwvisible = !this.parms.rwvisible
     },
     pieRepairBtn(){
       this.parms.repairVisible = !this.parms.repairVisible

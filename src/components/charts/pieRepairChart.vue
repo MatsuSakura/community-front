@@ -41,7 +41,7 @@ export default {
             })
             getListApi(this.parms).then(async (res) => {
                 console.log(res);
-                var tmp = res.data.total - this.parms.repairedNum;
+                var tmp = parseInt(res.data.total) - parseInt(this.parms.repairedNum);
                 setTimeout(() => {
                     this.myChart.setOption({
                         title: {
