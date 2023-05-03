@@ -21,7 +21,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { getListApi } from "@/api/notice";
+import { getLatestApi as getListApi } from "@/api/notice";
 import SysDialog from "@/components/system/SysDialog.vue";
 import rwChart from "@/components/charts/renwenChart.vue";
 import pieChart from '@/components/charts/pieChart.vue'
@@ -47,7 +47,6 @@ export default {
         pageSize: 10,
         title: "",
         complaintContent: "",
-        total: 0,
         status: "",
         pnvisible:false,
         rwvisible:false,
@@ -78,8 +77,7 @@ export default {
       if (res && res.code == 200) {
         //给表格赋值
         console.log(res);
-        this.tableList = res.data.records;
-        this.parms.total = res.data.total;
+        this.tableList = res.data;
       }
     },
   },
@@ -92,7 +90,7 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.tableHeight = 100;
+      this.tableHeight = 200;
     });
   },
 }

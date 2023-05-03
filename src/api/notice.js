@@ -3,6 +3,9 @@ import http from '@/utils/http'
 export async function getListApi(parm){
     return await http.get("/api/sysNotice/list",parm)
 }
+export async function getLatestApi(parm){
+    return await http.get("/api/sysNotice/latest",parm)
+}
 //新增
 export async function addApi(parm){
     return await http.post("/api/sysNotice",parm)
