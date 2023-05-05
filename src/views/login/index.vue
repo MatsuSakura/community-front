@@ -38,12 +38,12 @@
       </el-form-item>
       <el-form-item label>
         <el-row :gutter="20">
-          <el-col :span="12">
+          <el-col style="text-align: center;">
             <el-button @click="onSubmit" class="my-button" type="primary">登录</el-button>
           </el-col>
-          <el-col :span="12">
+          <!-- <el-col :span="12">
             <el-button class="my-button">取消</el-button>
-          </el-col>
+          </el-col> -->
         </el-row>
       </el-form-item>
     </el-form>

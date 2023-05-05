@@ -556,7 +556,7 @@
         }
         //设置编辑属性
         this.addModel.editType = "1";
-        this.addModel.editType = "2";
+
         //设置弹框属性
         this.addDialog.title = "编辑信息";
         this.addDialog.visible = true;

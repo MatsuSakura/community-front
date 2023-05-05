@@ -126,7 +126,7 @@
           <el-form-item prop="username" label="账户">
             <el-input v-model="addModel.username"></el-input>
           </el-form-item>
-          <el-form-item v-if="addModel.editType != '1'" prop="password" label="密码">
+          <el-form-item prop="password" label="密码">
             <el-input v-model="addModel.password"></el-input>
           </el-form-item>
           <el-form-item prop="status" label="状态">

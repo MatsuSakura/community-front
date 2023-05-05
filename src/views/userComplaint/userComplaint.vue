@@ -66,7 +66,7 @@
     </el-pagination>
     <!-- 新增弹框 -->
     <sys-dialog :title="addDialog.title" :height="addDialog.height" :width="addDialog.width" :visible="addDialog.visible"
-      @onClose="onClose" @onConfirm="onConfirm">
+      @onClose="onClose" @onConfirm="onConfirm2">
       <template slot="content">
         <el-form :model="addModel" ref="addForm" :rules="rules" label-width="80px" :inline="false" size="small">
           <el-form-item prop="remark" label="处理小结">
@@ -165,6 +165,22 @@ export default {
         if (valid) {
           //设置用户id
           this.addModel.userId = getUserId();
+          let res = await editComApi(this.addModel);
+          if (res && res.code == 200) {
+            //刷新表格
+            this.getList();
+            //信息提示
+            this.$message.success(res.msg);
+            this.addDialog.visible = false;
+            this.getList();
+            this.$message.success('处理成功!');
+          }
+        }
+      });
+    },
+    onConfirm2() {
+      this.$refs.addForm.validate(async (valid) => {
+        if (valid) {
           let res = await editComApi(this.addModel);
           if (res && res.code == 200) {
             //刷新表格

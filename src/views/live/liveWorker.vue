@@ -95,13 +95,13 @@
           <el-form-item v-if="addModel.editType != '1'" prop="password" label="密码">
             <el-input v-model="addModel.password"></el-input>
           </el-form-item>
-          <el-form-item prop="status" label="是否外出打工">
+          <el-form-item prop="status" label="工作状态">
             <el-radio-group v-model="addModel.status">
               <el-radio :label="'0'">外出工作</el-radio>
               <el-radio :label="'1'">本地工作</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item style="margin-left: 50px;" prop="ChildrenHealth" label="身体情况">
+          <el-form-item prop="ChildrenHealth" label="身体情况">
             <el-input v-model="addModel.healthProblem"></el-input>
           </el-form-item>
         </el-form>
@@ -476,7 +476,6 @@ export default {
       }
       //设置编辑属性
       this.addModel.editType = "1";
-      this.addModel.editType = "2";
       //设置弹框属性
       this.addDialog.title = "编辑信息";
       this.addDialog.visible = true;
