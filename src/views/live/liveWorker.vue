@@ -244,6 +244,7 @@ export default {
         editType: "",
         userId: "",
         username: "",
+        birthday:"",
         workUnit: "",
         phone: "",
         sex: "",
@@ -463,6 +464,7 @@ export default {
     async editBtn(row) {
       //清空表单
       this.$resetForm("addForm", this.addModel);
+      this.addModel.editType = "1";
       //获取编辑的数据
       let res = await getUserByIdApi({ userId: row.userId });
       if (res && res.code == 200) {

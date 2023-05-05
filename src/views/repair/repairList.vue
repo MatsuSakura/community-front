@@ -66,7 +66,7 @@
         :width="addDialog.width"
         :visible="addDialog.visible"
         @onClose="onClose"
-        @onConfirm="onConfirm"
+        @onConfirm="onConfirm2"
       >
         <template slot="content">
           <el-form
@@ -174,6 +174,22 @@
           if (valid) {
             //设置用户id
             this.addModel.userId = getUserId();
+            let res = await editApi(this.addModel);
+            if (res && res.code == 200) {
+              //刷新表格
+              this.getMyList();
+              //信息提示
+              this.$message.success(res.msg);
+              this.addDialog.visible = false;
+              this.getMyList();
+            this.$message.success('处理成功!');
+            }
+          }
+        });
+      },
+      onConfirm2() {
+        this.$refs.addForm.validate(async (valid) => {
+          if (valid) {
             let res = await editApi(this.addModel);
             if (res && res.code == 200) {
               //刷新表格

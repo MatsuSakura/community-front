@@ -47,9 +47,10 @@
       </el-table-column>
       <el-table-column label="关怀群体" prop="offerId">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.offerId >= '60'" type="danger" size="small">老年人</el-tag>
-          <el-tag v-else-if="scope.row.offerId <= 10" type="warning" size="small">儿童</el-tag>
-          <el-tag v-else="scope.row.offerId >= '20'" type="success" size="small">中青年</el-tag>
+          <el-tag v-if="scope.row.offerId >= '60' && scope.row.offerId != null" type="danger" size="small">老年人</el-tag>
+          <el-tag v-else-if="scope.row.offerId <= 10 && scope.row.offerId != null" type="warning" size="small">儿童</el-tag>
+          <el-tag v-else-if="scope.row.offerId >= '20' && scope.row.offerId != null" type="success" size="small">中青年</el-tag>
+          <el-tag v-else="scope.row.offerId == null" type="success" size="small">暂无</el-tag>
         </template>
       </el-table-column>
       <el-table-column align="center" width="120" label="操作">

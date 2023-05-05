@@ -103,12 +103,12 @@
           <el-form-item prop="phone" label="就读学校">
             <el-input v-model="addModel.school"></el-input>
           </el-form-item>
-            <!-- <el-form-item prop="username" label="账户">
+            <el-form-item prop="username" label="账户">
             <el-input v-model="addModel.username"></el-input>
           </el-form-item>
           <el-form-item v-if="addModel.editType != '1'" prop="password" label="密码">
             <el-input v-model="addModel.password"></el-input>
-          </el-form-item> -->
+          </el-form-item>
             <el-form-item prop="status" label="状态">
               <el-radio-group v-model="addModel.status">
                 <el-radio :label="'0'">启用</el-radio>
@@ -544,6 +544,7 @@
       async editBtn(row) {
         //清空表单
         this.$resetForm("addForm", this.addModel);
+        this.addModel.editType = "1";
         //获取编辑的数据
         let res = await getUserByIdApi({ userId: row.userId });
         if (res && res.code == 200) {
