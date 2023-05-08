@@ -14,6 +14,17 @@
         <el-form-item label="房屋编号">
           <el-input v-model="parms.houseNum"></el-input>
         </el-form-item>
+        <el-form-item label="缴费情况">
+          <el-select v-model="parms.payWaterStatus" placeholder="" clearable filterable>
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item>
           <el-button icon="el-icon-search" @click="searchBtn">查询</el-button>
           <el-button style="color: #ff7670" icon="el-icon-delete" @click="resetBtn"
@@ -31,7 +42,7 @@
         <el-table-column label="房屋编号" prop="houseNum"></el-table-column>
         <el-table-column label="缴费金额" prop="payWaterMoney"></el-table-column>
         <el-table-column label="所属月份" prop="payWaterMonth"></el-table-column>
-        <el-table-column label="表显" prop="waterNum"></el-table-column>
+        <!-- <el-table-column label="表显" prop="waterNum"></el-table-column> -->
         <el-table-column prop="payPowerStatus" label="缴费状态">
           <template slot-scope="scope">
             <el-tag v-if="scope.row.payWaterStatus == '0'" type="danger" size="small"
@@ -221,13 +232,6 @@
               message: "请填写缴费金额",
             },
           ],
-          waterNum: [
-            {
-              trigger: "change",
-              required: true,
-              message: "请填写表显",
-            },
-          ],
           payWaterStatus: [
             {
               trigger: "change",
@@ -236,6 +240,16 @@
             },
           ],
         },
+        options: [
+          {
+            value: "0",
+            label: "未缴费",
+          },
+          {
+            value: "1",
+            label: "已缴费",
+          }
+        ],
         //新增弹框绑定数据域
         addModel: {
           editType: "",
@@ -267,6 +281,7 @@
           pageSize: 10,
           loginName: "",
           houseNum: "",
+          payWaterStatus:"",
         },
       };
     },
@@ -415,6 +430,7 @@
         //把搜索框的数据清空
         this.parms.loginName = '';
         this.parms.houseNum = '';
+        this.parms.payWaterStatus = '';
         this.getList();
       },
       //搜索按钮

@@ -21,5 +21,5 @@ export async function deleteApi(parm){
 }
 //缴费
 export async function payApi(parm){
-    return await http.post("/api/feeWater/payPower",parm)
+    return await http.post("/api/feeWater/payWater",parm)
 }

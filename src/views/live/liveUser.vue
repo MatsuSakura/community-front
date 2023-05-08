@@ -696,7 +696,7 @@ export default {
       //获取车位列表
       this.getAssignParkList();
       //弹框属性设置
-      this.parkDialog.title = "为【" + row.userName + "】分配车位";
+      this.parkDialog.title = "为【" + row.loginName + "】分配车位";
       this.parkDialog.visible = true;
     },
     async getAssignParkList() {

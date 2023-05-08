@@ -14,6 +14,17 @@
         <el-form-item label="房屋编号">
           <el-input v-model="parms.houseNum"></el-input>
         </el-form-item>
+        <el-form-item label="缴费情况">
+          <el-select v-model="parms.payPowerStatus" placeholder="" clearable filterable>
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item>
           <el-button icon="el-icon-search" @click="searchBtn">查询</el-button>
           <el-button style="color: #ff7670" @click="resetBtn" icon="el-icon-delete">重置</el-button>
@@ -194,13 +205,6 @@
               message: "请填写缴费金额",
             },
           ],
-          powerNum: [
-            {
-              trigger: "change",
-              required: true,
-              message: "请填写表显",
-            },
-          ],
           payPowerStatus: [
             {
               trigger: "change",
@@ -209,6 +213,16 @@
             },
           ],
         },
+        options: [
+          {
+            value: "0",
+            label: "未缴费",
+          },
+          {
+            value: "1",
+            label: "已缴费",
+          }
+        ],
         //新增表单绑定数据源
         addModel: {
           houseId: "",
@@ -235,6 +249,7 @@
         parms: {
           loginName: "",
           houseNum: "",
+          payPowerStatus:"",
           currentPage: 1,
           pageSize: 10,
           total: 0,
@@ -276,6 +291,7 @@
       resetBtn(){
         this.parms.loginName = '';
         this.parms.houseNum = '';
+        this.parms.payPowerStatus='',
         this.getList();
       },
       //删除按钮

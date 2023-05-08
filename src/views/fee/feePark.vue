@@ -14,6 +14,17 @@
         <el-form-item label="车位名称">
           <el-input v-model="parms.parkName"></el-input>
         </el-form-item>
+        <el-form-item label="缴费情况">
+          <el-select v-model="parms.payParkStatus" placeholder="" clearable filterable>
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item>
           <el-button icon="el-icon-search" @click="searchBtn">查询</el-button>
           <el-button style="color: #ff7670" @click="resetBtn" icon="el-icon-delete"
@@ -198,6 +209,16 @@
           width: 650,
           visible: false,
         },
+        options: [
+          {
+            value: "0",
+            label: "未缴费",
+          },
+          {
+            value: "1",
+            label: "已缴费",
+          }
+        ],
         //车辆列表
         parkList: [],
         //表格高度
@@ -210,6 +231,7 @@
           pageSize: 10,
           loginName: "",
           parkName: "",
+          payParkStatus:"",
           total: 0,
         },
       };
@@ -317,6 +339,7 @@
       resetBtn() {
         this.parms.loginName = "";
         this.parms.parkName = "";
+        this.parms.payParkStatus="";
         this.getList();
       },
       //搜索按钮
